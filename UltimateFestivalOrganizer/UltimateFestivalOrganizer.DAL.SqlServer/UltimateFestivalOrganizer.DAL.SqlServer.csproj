@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{096B258C-B992-447E-B9AF-EA8D1CE97ABC}</ProjectGuid>
+    <ProjectGuid>{2D53192E-BFC3-4EC7-A0D9-D9F835677F33}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DAL.Common</RootNamespace>
-    <AssemblyName>DAL.Common</AssemblyName>
+    <RootNamespace>UltimateFestivalOrganizer.DAL.SqlServer</RootNamespace>
+    <AssemblyName>UltimateFestivalOrganizer.DAL.SqlServer</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,10 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DALFactory.cs" />
-    <Compile Include="Domain\BaseEntity.cs" />
-    <Compile Include="Domain\User.cs" />
-    <Compile Include="IDatabase.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
