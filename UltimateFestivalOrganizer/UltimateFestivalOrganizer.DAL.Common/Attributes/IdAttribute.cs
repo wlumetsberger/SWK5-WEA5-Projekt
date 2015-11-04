@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Common.Domain
+namespace UltimateFestivalOrganizer.DAL.Common.Attributes
 {
-    public class BaseEntity
+    public class Id : Attribute
     {
     }
 }

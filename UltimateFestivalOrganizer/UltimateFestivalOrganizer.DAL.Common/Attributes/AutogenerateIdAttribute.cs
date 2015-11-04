@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UltimateFestivalOrganizer.DAL.SqlServer
+namespace UltimateFestivalOrganizer.DAL.Common.Attributes
 {
-    public class Class1
+    public class AutogenerateIdAttribute : Attribute
     {
     }
 }

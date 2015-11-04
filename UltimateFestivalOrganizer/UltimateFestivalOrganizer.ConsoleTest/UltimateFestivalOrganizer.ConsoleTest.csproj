@@ -49,6 +49,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UltimateFestivalOrganizer.DAL.Common\UltimateFestivalOrganizer.DAL.Common.csproj">
+      <Project>{9f4fa235-dc59-44a0-9ed4-931529c50d1d}</Project>
+      <Name>UltimateFestivalOrganizer.DAL.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UltimateFestivalOrganizer.DAL.SqlServer\UltimateFestivalOrganizer.DAL.SqlServer.csproj">
+      <Project>{2d53192e-bfc3-4ec7-a0d9-d9f835677f33}</Project>
+      <Name>UltimateFestivalOrganizer.DAL.SqlServer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

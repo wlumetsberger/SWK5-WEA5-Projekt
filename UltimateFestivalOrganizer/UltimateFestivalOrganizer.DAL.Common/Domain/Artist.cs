@@ -1,20 +1,23 @@
-﻿using System;
+﻿using DAL.Common.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UltimateFestivalOrganizer.DAL.Common.Attributes;
 
-namespace DAL.Common.Domain
+namespace UltimateFestivalOrganizer.DAL.Common.Domain
 {
-    [Table("User")]
-    public class User : BaseEntity
+    [Table("Artist")]
+    public class Artist : BaseEntity
     {
         [Id]
         public string Email { get; set; }
-
         public string FirstName { get; set; }
-
         public string LastName { get; set; }
+        public byte[] Picture { get; set; }
+        public Catagory Catagory { get; set; }
+        public Country Country { get; set; }
+
     }
 }

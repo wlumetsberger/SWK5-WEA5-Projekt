@@ -40,11 +40,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Dao\ArtistDao.cs" />
+    <Compile Include="Dao\BaseDao.cs" />
+    <Compile Include="Dao\CatagoryDao.cs" />
+    <Compile Include="Dao\CountryDao.cs" />
+    <Compile Include="Dao\PerformanceDao.cs" />
+    <Compile Include="Database.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Dao\" />
+    <ProjectReference Include="..\UltimateFestivalOrganizer.DAL.Common\UltimateFestivalOrganizer.DAL.Common.csproj">
+      <Project>{9f4fa235-dc59-44a0-9ed4-931529c50d1d}</Project>
+      <Name>UltimateFestivalOrganizer.DAL.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

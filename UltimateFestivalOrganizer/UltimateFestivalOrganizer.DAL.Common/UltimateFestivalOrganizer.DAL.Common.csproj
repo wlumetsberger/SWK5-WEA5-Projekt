@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,14 +41,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AutogenerateIdAttribute.cs" />
+    <Compile Include="Attributes\IdAttribute.cs" />
+    <Compile Include="Attributes\TableAttribute.cs" />
     <Compile Include="DALFactory.cs" />
+    <Compile Include="Dao\IArtistDao.cs" />
+    <Compile Include="Dao\IBaseDao.cs" />
+    <Compile Include="Dao\ICatagoryDao.cs" />
+    <Compile Include="Dao\ICountryDao.cs" />
+    <Compile Include="Dao\IPerformanceDao.cs" />
+    <Compile Include="Dao\IUserDao.cs" />
+    <Compile Include="Dao\IVenueDao.cs" />
+    <Compile Include="Domain\Artist.cs" />
+    <Compile Include="Domain\BaseEntity.cs" />
+    <Compile Include="Domain\Catagory.cs" />
+    <Compile Include="Domain\Country.cs" />
+    <Compile Include="Domain\Performance.cs" />
+    <Compile Include="Domain\User.cs" />
+    <Compile Include="Domain\Venue.cs" />
     <Compile Include="IDatabase.cs" />
+    <Compile Include="NoPossibleDaoFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dao\" />
-    <Folder Include="Domain\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
