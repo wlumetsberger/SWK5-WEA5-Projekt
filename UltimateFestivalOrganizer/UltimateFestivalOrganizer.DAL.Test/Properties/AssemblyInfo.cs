@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über folgende 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
-[assembly: AssemblyTitle("UltimateFestivalOrganizer.Test")]
+[assembly: AssemblyTitle("UltimateFestivalOrganizer.DAL.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("UltimateFestivalOrganizer.Test")]
+[assembly: AssemblyProduct("UltimateFestivalOrganizer.DAL.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
-[assembly: Guid("43988f6b-1d6b-4d65-80fd-c7bbd0b2c552")]
+[assembly: Guid("2925872d-3fd2-498c-baf4-f66c0b484119")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //

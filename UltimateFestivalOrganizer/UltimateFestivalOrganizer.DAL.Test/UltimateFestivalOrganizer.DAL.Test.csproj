@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{43988F6B-1D6B-4D65-80FD-C7BBD0B2C552}</ProjectGuid>
+    <ProjectGuid>{2925872D-3FD2-498C-BAF4-F66C0B484119}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UltimateFestivalOrganizer.Test</RootNamespace>
-    <AssemblyName>UltimateFestivalOrganizer.Test</AssemblyName>
+    <RootNamespace>UltimateFestivalOrganizer.DAL.Test</RootNamespace>
+    <AssemblyName>UltimateFestivalOrganizer.DAL.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -47,9 +47,7 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <Private>False</Private>
-        </Reference>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -63,9 +61,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\UltimateFestivalOrganizer.DAL.Common\UltimateFestivalOrganizer.DAL.Common.csproj">
       <Project>{9f4fa235-dc59-44a0-9ed4-931529c50d1d}</Project>
       <Name>UltimateFestivalOrganizer.DAL.Common</Name>
@@ -76,10 +71,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="DAL.SqlServer.DB\CreateDatabase.sql" />
     <Content Include="DAL.SqlServer.DB\DropDatabase.sql" />
     <Content Include="DAL.SqlServer.DB\InsertData.sql" />
     <Content Include="DAL.SqlServer.DB\UltimateFestivalOrganizerTestDb.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DAL.SqlServer.DB\UltimateFestivalOrganizerTestDb_log.ldf">
+      <DependentUpon>UltimateFestivalOrganizerTestDb.mdf</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -103,11 +105,6 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(SQLDBExtensionsRefPath)' != ''" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(SQLDBExtensionsRefPath)' == ''" />
-  <PropertyGroup>
-    <SsdtUnitTestVersion>2.0</SsdtUnitTestVersion>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
