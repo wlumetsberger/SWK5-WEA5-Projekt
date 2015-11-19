@@ -10,11 +10,13 @@ namespace DAL.Common.Domain
     [Table("User")]
     public class User : BaseEntity
     {
-        [Id]
+        
         public string Email { get; set; }
 
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public string Password { get; set; }
     }
 }

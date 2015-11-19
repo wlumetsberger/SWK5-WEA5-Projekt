@@ -110,11 +110,6 @@ namespace UltimateFestivalOrganizer.DAL.SqlServer
         {
             return false;
         }
-
-        public void DefineParameter(DbCommand command, DbType @string, string id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 

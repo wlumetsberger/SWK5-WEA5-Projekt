@@ -11,13 +11,14 @@ namespace UltimateFestivalOrganizer.DAL.Common.Domain
     [Table("Artist")]
     public class Artist : BaseEntity
     {
-        [Id]
         public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public byte[] Picture { get; set; }
+        public string Name { get; set; }
+        public string Link { get; set; }
+        public string Picture { get; set; }
         public Catagory Catagory { get; set; }
-        public Country Country { get; set; }
+        public string Country { get; set; }
+
+        public bool Deleted { get; set; }
 
     }
 }

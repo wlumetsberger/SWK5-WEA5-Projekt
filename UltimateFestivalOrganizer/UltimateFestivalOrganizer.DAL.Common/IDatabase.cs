@@ -16,6 +16,5 @@ namespace DAL.Common
         int DeclareParameter(DbCommand command, string name, DbType type);
         void DefineParameter(DbCommand command, string name, DbType type, object value);
         void SetParameter(DbCommand command, string name, object value);
-        void DefineParameter(DbCommand command, DbType @string, string id);
     }
 }

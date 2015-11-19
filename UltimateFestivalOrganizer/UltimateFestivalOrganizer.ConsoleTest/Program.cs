@@ -15,11 +15,24 @@ namespace UltimateFestivalOrganizer.ConsoleTest
         static void Main(string[] args)
         {
 
-            IArtistDao artistDao = (IArtistDao)DALFactory.getDao<Artist>(DALFactory.CreateDatabase());
-                //(IArtistDao) DALFactory.getDao<Artist>(DALFactory.CreateDatabase());
-            artistDao.findAll().ToList().ForEach(x => Console.WriteLine(x.Email));
+            IArtistDao artistDao = (IArtistDao)DALFactory.CreateArtistDao(DALFactory.CreateDatabase());
+            Artist art = artistDao.findById(1);
+           
+          
+
+            Artist a = new Artist();
+            a.Email = "test@aon.at";
+         //   a.FirstName = "test";
+         //   a.LastName = "test";
+            a.Country = "AUT";
+
+            artistDao.Insert(a);
+
+            Console.WriteLine("found: " + artistDao.findById(1).Id);
+            //countryDao.Delete(c);
             Console.ReadKey();
-           /* Console.WriteLine("Try to Insert Element");
+           /* Console.WriteLine("Try to Insert Eleme
+           nt");
             artistDao.Insert(new DAL.Common.Domain.Artist());
             Console.ReadKey();
             Console.WriteLine("Try to Delete Element");

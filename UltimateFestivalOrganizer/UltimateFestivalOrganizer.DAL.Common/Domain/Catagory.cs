@@ -11,10 +11,6 @@ namespace UltimateFestivalOrganizer.DAL.Common.Domain
     [Table("Catagory")]
     public class Catagory : BaseEntity
     {
-        [Id]
-        [AutogenerateId]
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public string Description { get; set; }

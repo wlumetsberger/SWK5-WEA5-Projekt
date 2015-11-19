@@ -43,8 +43,9 @@
     <Compile Include="Dao\ArtistDao.cs" />
     <Compile Include="Dao\BaseDao.cs" />
     <Compile Include="Dao\CatagoryDao.cs" />
-    <Compile Include="Dao\CountryDao.cs" />
     <Compile Include="Dao\PerformanceDao.cs" />
+    <Compile Include="Dao\UserDao.cs" />
+    <Compile Include="Dao\VenueDao.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

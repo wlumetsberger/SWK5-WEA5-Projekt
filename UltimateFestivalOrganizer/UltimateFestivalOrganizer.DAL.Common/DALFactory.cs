@@ -38,24 +38,70 @@ namespace DAL.Common
               new object[] { connectionString }) as IDatabase;
         }
 
-        public static IArtistDao getArtistDao(IDatabase db)
+       
+        public static IArtistDao CreateArtistDao(IDatabase db)
         {
             Type artistType = dalAssembly.GetType(assemblyName + ".Dao.ArtistDao");
             return Activator.CreateInstance(artistType, new object[] { db })
                      as IArtistDao;
         }
-
-        public static IBaseDao<T> getDao<T>(IDatabase db) where T : BaseEntity
+        public static ICatagoryDao CreateCatagoryDao(IDatabase db)
         {
-            if(typeof(T) == typeof(Artist))
-            {
-                return (IBaseDao<T>)getArtistDao(db);
-            }else if(typeof(T) == typeof(Country))
-            {
-                return null;
-            }
-            throw new NoPossibleDaoFoundException();
-            
+            Type type = dalAssembly.GetType(assemblyName + ".Dao.CatagoryDao");
+            return Activator.CreateInstance(type, new object[] { db })
+                     as ICatagoryDao;
         }
+
+        public static IPerformanceDao CreatePerformanceDao(IDatabase db)
+        {
+            Type type = dalAssembly.GetType(assemblyName + ".Dao.PerformanceDao");
+            return Activator.CreateInstance(type, new object[] { db })
+                     as IPerformanceDao;
+        }
+        public static IUserDao CreateUserDao(IDatabase db)
+        {
+            Type type = dalAssembly.GetType(assemblyName + ".Dao.UserDao");
+            return Activator.CreateInstance(type, new object[] { db })
+                     as IUserDao;
+        }
+        public static IVenueDao CreateVenueDao(IDatabase db)
+        {
+            Type type = dalAssembly.GetType(assemblyName + ".Dao.VenueDao");
+            return Activator.CreateInstance(type, new object[] { db })
+                     as IVenueDao;
+        }
+        /// <summary>
+        /// Returns Correct Dao for any Type
+        /// This is usesfully in our BaseDao to fetch Eager relation shipss
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public static IDao CreateDao(IDatabase db, Type t)
+        {
+            if (typeof(Artist).Equals(t))
+            {
+                return CreateArtistDao(db);
+            }
+            else if (typeof(Catagory).Equals(t))
+            {
+                return CreateCatagoryDao(db);
+            }
+            else if (typeof(Performance).Equals(t))
+            {
+                return CreatePerformanceDao(db);
+            }
+            else if (typeof(Venue).Equals(t))
+            {
+                return CreateVenueDao(db);
+            }
+            else if (typeof(User).Equals(t))
+            {
+                return CreateUserDao(db);
+            }
+            return null;
+
+        }
+
     }
 }

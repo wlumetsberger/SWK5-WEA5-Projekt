@@ -11,11 +11,10 @@ namespace UltimateFestivalOrganizer.DAL.Common.Domain
     [Table("Performance")]
     public class Performance : BaseEntity
     {
-        [Id]
-        [AutogenerateId]
-        public int Id { get; set; }
         public DateTime StagingTime { get; set; }
         public Artist Artist { get; set; }
         public Venue Venue { get; set; }
+
+        public bool Canceld { get; set; }
     }
 }
