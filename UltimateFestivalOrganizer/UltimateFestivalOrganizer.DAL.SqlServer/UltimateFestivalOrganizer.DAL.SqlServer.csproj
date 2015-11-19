@@ -49,7 +49,6 @@
     <Compile Include="Database.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\UltimateFestivalOrganizer.DAL.Common\UltimateFestivalOrganizer.DAL.Common.csproj">
       <Project>{9f4fa235-dc59-44a0-9ed4-931529c50d1d}</Project>
