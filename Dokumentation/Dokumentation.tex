@@ -47,25 +47,17 @@ Weiters enthält dieses Projekt eine eigene Datenbank, für Integration-Tests, und
 \end{itemize}
 Als Datenbank wird eine SQLServer LocalDB verwendet.
 \subsubsection{Datenbank}
-Es müssen folgende Entitäten in der Datenbank abgebildet werden.
-\begin{itemize}
-\item Artist:
-Ein Artist, wird durch einen Namen, entweder Künstlername, oder Name der Gruppe gekennzeichnet. Weiters sollen einige Zusatzinformationen gespeichert werden.
-Zustäzlich ist ein Artist immer genau einer Kategorie zugeordnet.
-\item Catagory:
-Eine Catagory, ist durch ihren Namen, sowie einer kurzen Beschreibung gekennzeichnet.
-\item Venue
-Venue stellt die Spielstätte dar. An einer Spielstätte können jeweils mehrere Auftritte pro Tag stattfinden, jedoch nie gleichzeitig.
-\item Performance
-Eine Performance ist jeweils ein Auftritt. Dieser enthält zumindest eine Spielstätte, einen Akteur (Artist), sowie einen fixen Zeitpunkt. 
-Eine Performance kann nicht gelöscht werden, jedoch wird ein Artist gelöscht oder als gelöscht gekennzeichnet, besteht die Möglichkeit, die Performance als abgesagt zu Kennzeichnen.
-\item User
-Enthält Name, sowie Email und Passwort. Email und Passwort, werden als User Identifikation für einen in einer Späteren Ausbaustufe realisierten Login verwenden.
-\end{itemize}
 
+\begin{figure}[h]
+  \centering
+   \includegraphics[scale = 0.50]{./images/ERD.PNG}
+   \caption{Entity RelationShip Diagram}
+	 \label{ERD}
+\end{figure}
 
+Da Performance und Artists, in unserer Geschäftslogik nicht gelöscht werden, wurde ein Flag eingefügt, für Cancled bzw. Deleted. Es wird ein löschen auf Datenbankebene jedoch erlaubt.
+Die zwei Felder dienen dazu, um eben in der Geschäftslogik nicht löschen zu müssen, sondern nur als Gelöscht makieren zu können.
 Um die Datenzugriffschicht zu erleichtern, wurde auf jede Entiät ein Surogate gelegt. Die Tatsächlichen Keys, wurden jedoch mit Unique-Constraints realisiert.
-
 
 \subsubsection{Datenzugriffs-Schicht}
 \begin{itemize}
