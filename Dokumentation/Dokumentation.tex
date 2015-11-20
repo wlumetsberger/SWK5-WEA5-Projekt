@@ -44,8 +44,6 @@ Dieses Projekt enthält die spezifische Implementierung, der DAL.Common Interface
 \item UltimateFestivalOrganizer.DAL.Test:
 Dieses Projekt enthält die Tests für die Datenzugriffsschicht.
 Weiters enthält dieses Projekt eine eigene Datenbank, für Integration-Tests, und SQL Scripts zum löschen, und wiederherstellen des Urzustandes der Datenbank.
-\item UtlimateFestivalOrganizer.DAL.CreateTestData:
-Dies ist ein Hilfsprojekt. Es kann ausgeführt werden, um eine Datenbank mit Testdaten zu füllen. Für die Unit-Tests wird es derzeit nicht verwendet, da ich bei diesen derzeit noch nicht mit Dynamisch generierten Testdaten umgehen kann.
 \end{itemize}
 Als Datenbank wird eine SQLServer LocalDB verwendet.
 \subsubsection{Datenbank}
@@ -144,12 +142,20 @@ Es wäre angedacht, auch eine generische Suchmethode zu entwickeln. Diese wäre hi
 \item{UltimateFestivalOrganizer.DAL.Test}
 In diesem Projekt werden lediglich die Datenzugriffsfunktionen getestet. Da es Hier keinen Sinn macht, die Funktionen wirklich Unit zu Testen, wurden hier Integration Tests erstellt.
 Alle Tests werden von einer Basis-Klasse abgeleitet. Diese Klasse enthält TestInitialize und CleanUp methoden. 
+In dem Projekt existiert eine App.config, in welcher das Datenbankfile, sowie ein Ordern für Delete/Create/Insert files, welche vor jedem Test automatisch von der Basis Testklasse ausgeführt wird.
 \begin{itemize}
 \item{BaseTest}
 Der Test ist die Basisklasse einer jeden Testklasse in diesem Projekt. In der Methode TestInitzialize wird hier jeweils die TestDatenbank komplett bereinigt. Danach wird die Struktur neu erstellt, und es werden definiert Testdatensätze eingefügt. Daher ist es wichtig, dass jeder Testfall von dieser Methode ableitet, damit sichergestellt ist, das die Tests immer auf bereinigten Daten ausgeführt werden.
 \end{itemize}
+Mit den im Projekt enthaltenen Testfällen, wird folgendes Ergebnis erzielt:
+\begin{figure}[hbtp]
+  \centering
+   \includegraphics[scale = 0.50]{./images/Testabdeckung_DAL.PNG}
+   \caption{DAL Testabdeckung}
+	 \label{Klassendiagramm Implementierung Daos}
+\end{figure}
 \end{itemize}
-
+\end{itemize}
 \newpage
 \listoffigures
 \end{document}
