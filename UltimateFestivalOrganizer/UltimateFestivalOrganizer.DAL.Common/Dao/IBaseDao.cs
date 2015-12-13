@@ -12,8 +12,10 @@ namespace UltimateFestivalOrganizer.DAL.Common.Dao
     {
         T findById(object id);
         T findByUniqueProperty(PropertyInfo prop, object value);
+        IList<T> findByProperty(PropertyInfo prop, object value);
         IList<T> findAll();
         bool Update(T element);
-        bool Insert(T element);
+        T Insert(T element);
+        bool Delete(T element);
     }
 }

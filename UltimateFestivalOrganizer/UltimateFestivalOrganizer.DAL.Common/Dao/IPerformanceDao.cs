@@ -9,5 +9,6 @@ namespace UltimateFestivalOrganizer.DAL.Common.Dao
 {
     public interface IPerformanceDao : IBaseDao<Performance>
     {
+        IList<Performance> findPerformanceForArtistsAfterDate(Artist artist, DateTime d);
     }
 }

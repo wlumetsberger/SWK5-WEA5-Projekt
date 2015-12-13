@@ -11,6 +11,6 @@ namespace DAL.Common.Domain
     {
         [Id]
         [AutogenerateId]
-        public int Id { get; set; }
+        public int? Id { get; set; }
     }
 }

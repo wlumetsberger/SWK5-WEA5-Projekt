@@ -12,6 +12,7 @@ namespace DAL.Common
     {
         IDataReader ExecuteReader(DbCommand command);
         int ExecuteNonQuery(DbCommand command);
+        int ExecuteInsertAndReturnId(DbCommand command);
         DbCommand CreateCommand(string genericCommandText);
         int DeclareParameter(DbCommand command, string name, DbType type);
         void DefineParameter(DbCommand command, string name, DbType type, object value);

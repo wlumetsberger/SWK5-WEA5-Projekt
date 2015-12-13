@@ -21,11 +21,16 @@ namespace UltimateFestivalOrganizer.DAL.Common.Util
         {
             try {
                 var idProperty = element.GetType().GetProperties().Where(x => x.GetCustomAttribute(typeof(Id)) != null).First();
-                return idProperty.GetGetMethod().Invoke(element, null);
+                if(idProperty != null && idProperty.GetGetMethod() != null)
+                {
+                    return idProperty.GetGetMethod().Invoke(element, null);
+                }
+                
             }catch(NullReferenceException e)
-            {
-                return null;
+            { 
+                
             }
+            return null;
         }
         /// <summary>
         /// Returns the TableName for an Entity

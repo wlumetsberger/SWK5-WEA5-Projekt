@@ -23,7 +23,7 @@ namespace UltimateFestivalOrganizer.DAL.SqlServer.Dao {
     /// <typeparam name="T"></typeparam>
     public abstract class BaseDao<T> : IDao, IBaseDao<T> where T : BaseEntity, new()
     {
-        private IDatabase database;
+        protected IDatabase database;
 
         public BaseDao(IDatabase db)
         {
@@ -33,7 +33,7 @@ namespace UltimateFestivalOrganizer.DAL.SqlServer.Dao {
         /// Generates a Default Select statement
         /// </summary>
         /// <returns></returns>
-        private string GetDefaultSelect()
+        protected string GetDefaultSelect()
         {
             StringBuilder sql = new StringBuilder();
             sql.Append("SELECT ");
@@ -168,7 +168,7 @@ namespace UltimateFestivalOrganizer.DAL.SqlServer.Dao {
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        private T ConvertSingleResultToObject(IDataReader reader)
+        protected T ConvertSingleResultToObject(IDataReader reader)
         {
             T element = new T();           
             typeof(T).GetProperties().All((x) => {
@@ -203,7 +203,7 @@ namespace UltimateFestivalOrganizer.DAL.SqlServer.Dao {
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        private IList<T> ConvertResultToList(IDataReader reader)
+        protected IList<T> ConvertResultToList(IDataReader reader)
         {
             IList<T> retVal = new List<T>();
             while (reader.Read())
@@ -234,6 +234,37 @@ namespace UltimateFestivalOrganizer.DAL.SqlServer.Dao {
             return findByUniqueProperty(DatabaseUtil.getIdPropertyOfElement(typeof(T)), id);
            
         }
+
+        public IList<T> findByProperty(PropertyInfo prop , object value)
+        {
+            
+            StringBuilder sql = new StringBuilder(this.GetDefaultSelect());
+            sql.Append(" WHERE ");
+            sql.Append(prop.Name);
+            sql.Append("=@Id");
+            // resolve foreign key properties correct
+            object valueToSet = value;
+            if (prop.PropertyType.BaseType == typeof(BaseEntity))
+            {
+                valueToSet = ((BaseEntity)value).Id;
+            }
+                DbCommand command = database.CreateCommand(sql.ToString());
+            database.DefineParameter(command, "@Id", DbType.Object, valueToSet);
+            using (IDataReader reader = database.ExecuteReader(command))
+            {
+                return ConvertResultToList(reader);
+            }
+        }
+      
+        public bool Delete(T element)
+        {
+            DbCommand command = database.CreateCommand(this.GetDefaultDelte());
+            database.DefineParameter(command, "@Id", DbType.Object, element.Id);
+            return database.ExecuteNonQuery(command) == 1;
+
+
+
+        }
         /// <summary>
         /// Find an Entity within its Unique Key
         /// </summary>
@@ -263,7 +294,7 @@ namespace UltimateFestivalOrganizer.DAL.SqlServer.Dao {
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public bool Insert(T element)
+        public T Insert(T element)
         {
             DbCommand command = database.CreateCommand(this.GetDefaultInsert());
             typeof(T).GetProperties().All((x) =>
@@ -285,8 +316,9 @@ namespace UltimateFestivalOrganizer.DAL.SqlServer.Dao {
                 }
                 return true;
             });
-            Console.WriteLine("Execute Insert: " + command.CommandText);
-            return database.ExecuteNonQuery(command) == 1;
+            int id = database.ExecuteInsertAndReturnId(command);
+            return this.findById(id);
+            
         }
         /// <summary>
         /// Update an Element in Database
@@ -299,7 +331,7 @@ namespace UltimateFestivalOrganizer.DAL.SqlServer.Dao {
             database.DefineParameter(command, "@WHEREID", DbType.Object, DatabaseUtil.getIdOfElement<T>(element));
             typeof(T).GetProperties().ToList().ForEach((x) =>
             {
-                if (x.GetCustomAttribute(typeof(Id)) == null)
+                if (x != null && x.GetCustomAttribute(typeof(Id)) == null)
                 {
                     string field = "@" + x.Name;
                     var value = x.GetGetMethod().Invoke(element, null);
@@ -345,6 +377,11 @@ namespace UltimateFestivalOrganizer.DAL.SqlServer.Dao {
         {
             return findAll();
         }
+
+        object IDao.findByProperty(PropertyInfo prop, object value)
+        {
+            return findByProperty(prop, value);
+        }
         /// <summary>
         /// Implement method and Call Correct Generic One
         /// </summary>
@@ -359,7 +396,7 @@ namespace UltimateFestivalOrganizer.DAL.SqlServer.Dao {
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        bool IDao.Insert(object element)
+        object IDao.Insert(object element)
         {
             return Insert((T)element);
         }

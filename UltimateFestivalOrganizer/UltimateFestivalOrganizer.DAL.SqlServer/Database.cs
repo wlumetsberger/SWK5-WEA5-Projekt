@@ -42,6 +42,26 @@ namespace UltimateFestivalOrganizer.DAL.SqlServer
             command.Parameters[index].Value = value;
         }
 
+        public int ExecuteInsertAndReturnId(DbCommand command)
+        {
+            DbConnection connection = null;
+            try
+            {
+                connection = CreateOpenConnection();
+                command.Connection = connection;
+                command.ExecuteNonQuery();
+
+                command.Parameters.Clear();
+                command.CommandText = "SELECT @@IDENTITY";
+                return Convert.ToInt32(command.ExecuteScalar());
+                //return 
+            }
+            finally // is executed in case of exceptions as well 
+            {
+                ReleaseConnection(connection);
+            }
+        }
+
         public int ExecuteNonQuery(DbCommand command)
         {
             DbConnection connection = null;

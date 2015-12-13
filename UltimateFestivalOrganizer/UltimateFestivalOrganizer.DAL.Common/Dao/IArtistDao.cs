@@ -9,6 +9,6 @@ namespace UltimateFestivalOrganizer.DAL.Common.Dao
 {
     public interface IArtistDao : IBaseDao<Artist>
     {
-       
+       IList<Artist>findAllWithoutDeleted();
     }
 }

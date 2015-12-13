@@ -80,10 +80,6 @@
     <Content Include="DAL.SqlServer.DB\UltimateFestivalOrganizerTestDb.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="DAL.SqlServer.DB\UltimateFestivalOrganizerTestDb_log.ldf">
-      <DependentUpon>UltimateFestivalOrganizerTestDb.mdf</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
