@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="UltimateFestivalOrganizer.Commander.Views.VenueEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UltimateFestivalOrganizer.Commander.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid Margin="0,0,0,5" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+
+        </Grid.RowDefinitions>
+
+            <TextBlock Margin="0,5,0,0" Text="Description:" Grid.Column="0" />
+            <TextBox  Margin="0,5,0,0" Name="txtDescription" Text="{Binding Description, ValidatesOnDataErrors=True}"  Grid.Column="1" />
+        <TextBlock Margin="0,5,0,0" Text="Short Description:" Grid.Column="0" Grid.Row="1"/>
+        <TextBox  Margin="0,5,0,0" Name="txtShortDescription" Text="{Binding ShortDescription, ValidatesOnDataErrors=True}"  Grid.Column="1" Grid.Row="1" />
+        <TextBlock Margin="0,5,0,0" Text="Adress:" Grid.Column="0"  Grid.Row="2"/>
+        <TextBox  Margin="0,5,0,0" Name="txtAdress" Text="{Binding Address, ValidatesOnDataErrors=True}"  Grid.Column="1"  Grid.Row="2"/>
+        <TextBlock Margin="0,5,0,0" Text="Longitude:" Grid.Column="0" Grid.Row="3"/>
+        <TextBox  Margin="0,5,0,0" Name="txtLongitude" Text="{Binding Longitude}"  Grid.Column="1" Grid.Row="3" />
+        <TextBlock Margin="0,5,0,0" Text="Latitude:" Grid.Column="0" Grid.Row="4"/>
+        <TextBox  Margin="0,5,0,0" Name="txtLatitude" Text="{Binding Latitude}"  Grid.Column="1" Grid.Row="4" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,53 @@
+﻿<Controls:MetroWindow x:Class="UltimateFestivalOrganizer.Commander.Views.AdministrationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:local="clr-namespace:UltimateFestivalOrganizer.Commander.Views"
+        xmlns:Converter="clr-namespace:UltimateFestivalOrganizer.Commander.Converter"
+        mc:Ignorable="d"
+        Title="AdministrationWindow" Height="600" Width="800">
+    <Window.Resources>
+        <Converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <Converter:BoolToVisibilityConverterInverted x:Key="BoolToVisibilityConverterInverted"/>
+    </Window.Resources>
+    <Grid>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding LoggedIn,Converter={StaticResource BoolToVisibilityConverterInverted}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{Binding LoginFailedMessage}" Grid.Row="0" Grid.ColumnSpan="2"/>
+            <TextBlock Margin="0,5,0,0"  Text="UserId:" Grid.Column="0" Grid.Row="1" />
+            <TextBox  Margin="5,0,0,0" Name="txtNutzerName" Text="{Binding UserName}" Grid.Column="1" Grid.Row="1" Width="100" />
+            <TextBlock Margin="0,5,0,0" Text="Password:" Grid.Column="0" Grid.Row="2"/>
+            <!--<TextBox Margin="5,5,0,0" Name="txtPassword" Text="{Binding UserPassword}" Grid.Column="1" Grid.Row="2" Width="100" />-->
+            <PasswordBox   Margin="5,5,0,0" Name="txtPassword" Grid.Column="1" Grid.Row="2" Width="100"/>
+            <Button Command="{Binding Login}" CommandParameter="{Binding ElementName=txtPassword}"  HorizontalAlignment="Left" Grid.Row="3" Grid.ColumnSpan="2" >Login</Button>
+          
+        </Grid>
+       
+          
+        <TabControl Visibility="{Binding LoggedIn,Converter={StaticResource BoolToVisibilityConverter}}">
+            <TabItem Header="Artists">
+                <local:ArtistAdministration DataContext="{Binding CurrentArtistAdministration}"/>
+            </TabItem>
+            <TabItem Header="Catagories">
+                <local:CatagoryAdministration DataContext="{Binding CurrentCatagoryAdministration}"/>
+            </TabItem>
+            <TabItem Header="Venues">
+                <local:VenueAdministration DataContext="{Binding CurrentVenueAdministration}" />
+            </TabItem>
+            <TabItem Header="Performances">
+                <local:PerformanceAdministration DataContext="{Binding CurrentPerformanceAdministration}" />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Controls:MetroWindow>

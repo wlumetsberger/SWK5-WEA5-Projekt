@@ -1,0 +1,240 @@
+﻿<UserControl x:Class="UltimateFestivalOrganizer.Commander.Views.PerformanceAdministration"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UltimateFestivalOrganizer.Commander.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="PerformanceAdministrationVM">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            
+        </Grid.RowDefinitions>
+       
+        <StackPanel Grid.Row="0"  Orientation="Horizontal">
+            <Button Width="50" Height="50" Command="{Binding ValidatePerformances}" Style="{DynamicResource MetroCircleButtonStyle}">
+                <Rectangle Width="20" Height="20"
+                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_check}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <Button Width="50" Height="50" Command="{Binding SavePerformances}" Style="{DynamicResource MetroCircleButtonStyle}">
+                <Rectangle Width="20" Height="20"
+                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_save}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <Button Width="50" Height="50" Command="{Binding SendMailToArtists}" Style="{DynamicResource MetroCircleButtonStyle}">
+                <Rectangle Width="20" Height="20"
+                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_email}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            
+            <DatePicker x:Name="dpBeginDate" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5,0,9" SelectedDate="{Binding CurrentDate, Mode=TwoWay}"/>
+
+        </StackPanel>
+        <ListView Grid.Row="1" ItemsSource="{Binding Performances}" SelectedItem="{Binding CurrentPerformance}" BorderThickness="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <!-- All rows -->
+                                <Setter Property="BorderBrush" Value="Black" />
+                                <Setter Property="BorderThickness" Value="2" />
+                                <Setter Property="CornerRadius" Value="5" />
+                            </Style>
+                        </Grid.Resources>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding Venue}"/>
+                        <Border Grid.Column="1">
+                        <StackPanel  Orientation="Vertical" MinWidth="100" HorizontalAlignment="Stretch" Background="{Binding ColorCol1}" >
+                            <TextBlock Text="{Binding CountryCol1}"/>
+                            <TextBlock Text="{Binding CatagoryCol1}"/>
+                            <TextBlock Text="{Binding ArtistNameCol1}"/>
+
+                            <ComboBox Margin="0,5,0,0" 
+                                        ItemsSource="{Binding Artists}" 
+                                        SelectedValue="{Binding ArtistCol1, Mode=TwoWay, ValidatesOnDataErrors=True}" >
+                                <ComboBox.GroupStyle>
+                                    <GroupStyle>
+                                        <GroupStyle.HeaderTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </GroupStyle.HeaderTemplate>
+                                    </GroupStyle>
+                                </ComboBox.GroupStyle>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Width="50" Height="50" Command="{Binding RemoveEntryCol1}" Style="{DynamicResource MetroCircleButtonStyle}">
+                                <Rectangle Width="20" Height="20"
+                                            Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}" />
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                        </StackPanel>
+                        </Border>
+                        <Border Grid.Column="2">
+                        <StackPanel Orientation="Vertical" MinWidth="100"  HorizontalAlignment="Stretch"  Background="{Binding ColorCol2}">
+                            <TextBlock Text="{Binding CountryCol2}"/>
+                            <TextBlock Text="{Binding CatagoryCol2}"/>
+                            <TextBlock Text="{Binding ArtistNameCol2}"/>
+                            <ComboBox Margin="0,5,0,0" 
+                                        ItemsSource="{Binding Artists}" 
+                                        SelectedValue="{Binding ArtistCol2, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                                <ComboBox.GroupStyle>
+                                    <GroupStyle>
+                                        <GroupStyle.HeaderTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </GroupStyle.HeaderTemplate>
+                                    </GroupStyle>
+                                </ComboBox.GroupStyle>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Width="50" Height="50" Command="{Binding RemoveEntryCol2}" Style="{DynamicResource MetroCircleButtonStyle}">
+                                <Rectangle Width="20" Height="20"
+                                            Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}" />
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                        </StackPanel>
+                        </Border>
+                        <Border Grid.Column="3">
+                        <StackPanel  Orientation="Vertical" MinWidth="100"  HorizontalAlignment="Stretch" Background="{Binding ColorCol3}">
+                            <TextBlock Text="{Binding CountryCol3}"/>
+                            <TextBlock Text="{Binding CatagoryCol3}"/>
+                            <TextBlock Text="{Binding ArtistNameCol3}"/>
+                            <ComboBox Margin="0,5,0,0" 
+                                        ItemsSource="{Binding Artists}" 
+                                        SelectedValue="{Binding ArtistCol3, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                                <ComboBox.GroupStyle>
+                                    <GroupStyle>
+                                        <GroupStyle.HeaderTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </GroupStyle.HeaderTemplate>
+                                    </GroupStyle>
+                                </ComboBox.GroupStyle>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Width="50" Height="50" Command="{Binding RemoveEntryCol3}" Style="{DynamicResource MetroCircleButtonStyle}">
+                                <Rectangle Width="20" Height="20"
+                                            Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}" />
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                        </StackPanel>
+                        </Border>
+                        <Border Grid.Column="4">
+                        <StackPanel  Orientation="Vertical" MinWidth="100"  HorizontalAlignment="Stretch" Background="{Binding ColorCol4}">
+                            <TextBlock Text="{Binding CountryCol4}"/>
+                            <TextBlock Text="{Binding CatagoryCol4}"/>
+                            <TextBlock Text="{Binding ArtistNameCol4}"/>
+                            <ComboBox Margin="0,5,0,0" 
+                                        ItemsSource="{Binding Artists}" 
+                                        SelectedValue="{Binding ArtistCol4, Mode=TwoWay, ValidatesOnDataErrors=True}" >
+                                <ComboBox.GroupStyle>
+                                    <GroupStyle>
+                                        <GroupStyle.HeaderTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </GroupStyle.HeaderTemplate>
+                                    </GroupStyle>
+                                </ComboBox.GroupStyle>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Width="50" Height="50" Command="{Binding RemoveEntryCol4}" Style="{DynamicResource MetroCircleButtonStyle}">
+                                <Rectangle Width="20" Height="20"
+                                            Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}" />
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                        </StackPanel>
+                        </Border>
+                        <Border Grid.Column="5">
+                        <StackPanel  Orientation="Vertical" MinWidth="100" HorizontalAlignment="Stretch"  Background="{Binding ColorCol5}">
+                            <TextBlock Text="{Binding CountryCol5}"/>
+                            <TextBlock Text="{Binding CatagoryCol5}"/>
+                            <TextBlock Text="{Binding ArtistNameCol5}"/>
+                            <ComboBox Margin="0,5,0,0" 
+                                        ItemsSource="{Binding Artists}" 
+                                        SelectedValue="{Binding ArtistCol5, Mode=TwoWay, ValidatesOnDataErrors=True}" >
+                                <ComboBox.GroupStyle>
+                                    <GroupStyle>
+                                        <GroupStyle.HeaderTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </GroupStyle.HeaderTemplate>
+                                    </GroupStyle>
+                                </ComboBox.GroupStyle>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Width="50" Height="50" Command="{Binding RemoveEntryCol5}" Style="{DynamicResource MetroCircleButtonStyle}">
+                                <Rectangle Width="20" Height="20"
+                                            Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}" />
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                        </StackPanel>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>
