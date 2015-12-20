@@ -148,6 +148,106 @@ Mit den im Projekt enthaltenen Testfällen, wird folgendes Ergebnis erzielt:
 \end{figure}
 \end{itemize}
 \end{itemize}
+
+\subsection{Ausbaustufe 2}
+In dieser Ausbaustufe wird sowohl die Business-Logik, als auch eine GUI entwickelt. 
+\subsubsection{BusinessLogik}
+Die BusinessLogik dient zur Abbildung von Speichern, Bearbeiten, holen von Daten. Dazu werden in erster Linie zwei Interfaces erstellt. IAdministrationService, enthält alle Methoden, die für die Applikation benötigt werden, um Daten zu bearbeiten zu kommen. In einem zweiten Interface, werden jene funktionalitäten abgebildet, welche nur lesenden Zugriff erhalten. Die Implementierung ist so erfolgt, dass alle Komponenten keine Abhängigkeiten haben. Das Business Logik Projekt, hat also nur eine Direkte abhängikeit zum Common, aber nicht zu einer konkreten Implementierung der DAL Klassen.
+Eine Factory wird benutzt, um eine konkrete Implementierung der AdministrationInterfaces zu bekommen.
+Aus Zeitlichen gründen, wird die BusinessLogik, welche nur schreibend zugreift, und z.B. für das WebService verwendet wird, erst dann entwickelt, wenn es auch wirklich benötigt wird.
+\begin{figure}[hbtp]
+  \centering
+   \includegraphics[scale = 0.50]{./images/KD_BUSINESS_LOGIC.PNG}
+   \caption{Klassendiagramm Business Logik}
+	 \label{Klassendiagramm Business Logik}
+\end{figure}
+In dem Projekt BusinessLogik.Test befinden sich Unit und Integration Tests für die oben genannten Implementierungen.
+
+\subsubsection{Commander}
+In diesem Projekt wird eine WPF-Applikation erstellt. Dieses Projekt hat eine Abhängikeit zum Common, und zur BusinessLogik. In der MainView wird ein AdministrationService erzeugt, welches dann an alle anderen ViewModels per Konstruktor mit übergeben wird. Die erzeugung erfolgt über die Factory. Schöner wäre es eventuell noch, wenn man die gesamtheit der Objekte über Dependency Injektion lösen würde. In diesem Fall ist es aber denke ich eine ebenfalls praktikable Lösung, wenn man es sich einmal erzeugt, und über den Konstruktor in die restlichen ViewModels mitzieht. 
+
+Die Kommunikation zwischen den ViewModels funktioniert per Messaging. Diese Methode liefert MVVM-Light, welches aus diesem Grund, für genau diesen einen Zweck verwendet wird. In der AppMessages Klasse befinden sich alle möglichen Messages. Alle ViewModels können sich danach auf diese Registrieren, und diese werfen. Z.B. Ändert sich eine Catagory wird eine CatagoryChanged message geworfen, und die anderen ViewModels, welche Catagories benötigen, können dies auf aktuellen stand bringen.
+
+Zur Validierung verwende ich das Framework MVVM-Validation. Dazu wurde im BaseModel IDataErrorInfo implementiert, um die Fehler auch korrekt anzuzeigen. 
+
+Zur Anzeige generell wurde MahAppsMetro verwendet. Dies bringt einen großen Designvorteil, und zum Beispiel eine vielzahl von Buttons usw..
+
+Es gibt in meiner Implementierung so gut wie keinen Code-Behind. Lediglich in der AdministrationWindow.xaml wird der richtige DataContext einmal gesetzt. Weiters befindet sich auch die Anzeige von zwei MessageBoxen hier. Die BusinessLogik, wird ebenfalls über eine Faktory geholt, und hier beim Anlegen des AdministrationVM zugewiesen.
+
+ Der FileDialog wurde ebenfalls über einen Service angesprochen. Diesen Service habe ich jedoch nicht in die BusinessLogik gepackt, sondern im GUI Projekt gelassen. Der Grund ist, dass dieses Service ja ein Fenster öffnet, um eine Datei auszuwählen, wesshalb es für mich eher in das GUI projekt gehört.
+
+Testfälle für die ViewModels wurden nicht erstellt. In der Praxis sollte man aber durchaus die ViewModels Unit-Testen.
+
+Für das Senden von Mails, kann in der App.config konfiguriert werden, dass die Mails nicht direkt versendet werden, sondern einfach in einen Ordner gespeichert werden. Um die Tests zu beschleunigen und zu vereinfachen, wurde dies so konfiguriert.
+
+\begin{figure}[hbtp]
+  \centering
+   \includegraphics[scale = 0.75]{./images/KD_COMMANDER.PNG}
+   \caption{Klassendiagramm Dao Interfaces}
+		\label{Klassendiagramm Dao Interfaces}
+\end{figure}
+
+Die einzelnen Administrationsschritte wurden in einzelne Tabreiter aufgebaut. Jeder Reiter enthält dabei die Gesamte funktionalität um z.B. die Artisten zu bearbeiten. Alle Felder, welche validiert werden müssen, und fehlerhaft werden, werden rot umrahmt.
+Die GUI wurde wie folgt designed, und stellt folgende Funktionalitäten dar:
+\begin{itemize}
+\item{Login}
+Gültige Logindaten um sich einzuloggen sind admin@test.at/admin.
+Gibt man ungültige LoginDaten ein, bleibt man am gleichen Screen und eine Fehlermeldung wird angezeigt.
+\begin{figure}[hbtp]
+  \centering
+   \includegraphics[scale = 0.75]{./images/LOGIN.PNG}
+   \caption{Login}
+		\label{Login}
+\end{figure}
+
+\item{Artists}
+Hier können Artisten bearbeitet, gelöscht oder hinzugefügt werden. Es können nur jene Artists gelöscht werden, welche keine aufführung haben.
+\begin{figure}[hbtp]
+  \centering
+   \includegraphics[scale = 0.75]{./images/ARTISTS.PNG}
+   \caption{Administration Artists}
+		\label{Administration Artists}
+\end{figure}
+
+\item{Catagories}
+Erklärung siehe Artists.
+\begin{figure}[hbtp]
+  \centering
+   \includegraphics[scale = 0.75]{./images/CATAGORIES.PNG}
+   \caption{Administration Catagories}
+		\label{Administration Catagories}
+\end{figure}
+
+\item{Venues}
+Erklärung siehe Artists.
+\begin{figure}[hbtp]
+  \centering
+   \includegraphics[scale = 0.75]{./images/VENUES.PNG}
+   \caption{Administration Venues}
+		\label{Administration Venues}
+\end{figure}
+
+\item{Performances}
+Der Button Email in der Menü-Leiste sendet, das Tagesprogramm an alle beteiligten User. Möchte man nur einen Artist bescheid geben, so kann der Email-Button am entsprechenden Element verwendet werden.
+Vor dem Speichern wird das ganze Programm validiert. Mit dem Häckchen kann das gesamte Tagesprogramm validiert werden. Wird ein Artist mit dem Dropdown geändert, so wird im hintergrund sofort eine Validierung durchgeführt.
+
+\begin{figure}[hbtp]
+  \centering
+   \includegraphics[scale = 0.75]{./images/Performances.PNG}
+   \caption{Administration Performances}
+		\label{Administration Performances}
+\end{figure}
+
+Die Meldung das die Validierung erfolgreich war, wird nicht angezeigt, wenn die Validierung impliziet im hintergrund läuft. Nur wenn sie mit dem Häckchen gestartet wurde.
+
+\begin{figure}[hbtp]
+  \centering
+   \includegraphics[scale = 0.75]{./images/Performances_valid.PNG}
+   \caption{Administration Performances}
+		\label{Administration Performances}
+\end{figure}
+
+\end{itemize}
 \newpage
 \listoffigures
 \end{document}

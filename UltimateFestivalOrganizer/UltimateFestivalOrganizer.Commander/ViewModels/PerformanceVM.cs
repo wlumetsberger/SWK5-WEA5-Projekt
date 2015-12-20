@@ -29,6 +29,11 @@ namespace UltimateFestivalOrganizer.Commander.ViewModels
         public ICommand RemoveEntryCol3 { get; private set; }
         public ICommand RemoveEntryCol4 { get; private set; }
         public ICommand RemoveEntryCol5 { get; private set; }
+        public ICommand SendEmailCol1 { get; private set; }
+        public ICommand SendEmailCol2 { get; private set; }
+        public ICommand SendEmailCol3 { get; private set; }
+        public ICommand SendEmailCol4 { get; private set; }
+        public ICommand SendEmailCol5 { get; private set; }
 
         public PerformanceVM(Venue v, Performance p1, Performance p2, Performance p3, Performance p4, Performance p5,IAdministrationServices service, PerformanceAdministrationVM parent)
         {
@@ -88,6 +93,42 @@ namespace UltimateFestivalOrganizer.Commander.ViewModels
                 RaisePropertyChangedEvent(nameof(CountryCol5));
                 RaisePropertyChangedEvent(nameof(CatagoryCol5));
                 RaisePropertyChangedEvent(nameof(ColorCol5));
+            });
+
+            SendEmailCol1 = new RelayCommand(c =>
+            {
+                IList<Performance> toSend = new List<Performance>();
+                toSend.Add(Col1);
+                administrationService.SendMail(toSend,toSend);
+                AppMessages.ShowSuccessMessage.Send("Mail sent");
+            });
+            SendEmailCol2 = new RelayCommand(c =>
+            {
+                IList<Performance> toSend = new List<Performance>();
+                toSend.Add(Col2);
+                administrationService.SendMail(toSend, toSend);
+                AppMessages.ShowSuccessMessage.Send("Mail sent");
+            });
+            SendEmailCol3 = new RelayCommand(c =>
+            {
+                IList<Performance> toSend = new List<Performance>();
+                toSend.Add(Col3);
+                administrationService.SendMail(toSend, toSend);
+                AppMessages.ShowSuccessMessage.Send("Mail sent");
+            });
+            SendEmailCol4 = new RelayCommand(c =>
+            {
+                IList<Performance> toSend = new List<Performance>();
+                toSend.Add(Col4);
+                administrationService.SendMail(toSend, toSend);
+                AppMessages.ShowSuccessMessage.Send("Mail sent");
+            });
+            SendEmailCol5 = new RelayCommand(c =>
+            {
+                IList<Performance> toSend = new List<Performance>();
+                toSend.Add(Col5);
+                administrationService.SendMail(toSend, toSend);
+                AppMessages.ShowSuccessMessage.Send("Mail sent");
             });
         }
 

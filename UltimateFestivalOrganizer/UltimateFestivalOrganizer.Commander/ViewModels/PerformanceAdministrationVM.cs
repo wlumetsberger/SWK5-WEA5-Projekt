@@ -32,8 +32,9 @@ namespace UltimateFestivalOrganizer.Commander.ViewModels
             this.CurrentDate = DateTime.Now;
             this.LoadItems();
 
-            AppMessages.ArtistChanged.Register(this,(chageType) => { this.LoadItems(); });
-            AppMessages.CatagoryChanged.Register(this, (chageType) => { this.LoadItems(); });
+            AppMessages.ArtistChanged.Register(this,(changeType) => { this.LoadItems(); });
+            AppMessages.CatagoryChanged.Register(this, (changeType) => { this.LoadItems(); });
+            AppMessages.VenueChanged.Register(this, (changeType) => { this.LoadItems(); });
 
             ValidatePerformances = new RelayCommand((c) =>
             {
@@ -89,28 +90,19 @@ namespace UltimateFestivalOrganizer.Commander.ViewModels
             IList<Performance> toSend = new List<Performance>();
             foreach (Performance p in this.GetAllActivePerformancesFromScreen())
             {
-                bool found = false;
-                foreach (Performance p2 in performances)
+                bool shouldAdd = true;
+                foreach (Performance p2 in toSend)
                 {
-                    if (p.Artist.Id == p2.Artist.Id)
+                    if(p2.Artist.Id == p.Artist.Id)
                     {
-                        found = true;
-                        // check ob sich etwas verändert hat wenn ja sent to mail list
-                        if (p.Venue?.Id != p2.Venue?.Id)
-                        {
-                            toSend.Add(p);
-                        }
-                        else if (p.StagingTime != p2.StagingTime)
-                        {
-                            toSend.Add(p);
-                        }
+                        shouldAdd = false;
+                        break;
                     }
                 }
-                if (!found)
+                if(shouldAdd)
                 {
                     toSend.Add(p);
                 }
-
             }
             // check old ones removed
             foreach (Performance p in performances)

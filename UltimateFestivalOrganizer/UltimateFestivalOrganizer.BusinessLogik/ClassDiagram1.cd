@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="UltimateFestivalOrganizer.BusinessLogik.AdministrationServices" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AQACAQMAAoABICBAAAoAQAAQAIgAAAAAABAABAAAAAA=</HashCode>
+      <FileName>AdministrationServices.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="UltimateFestivalOrganizer.BusinessLogik.ElementInUseException">
+    <Position X="4.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ElementInUseException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UltimateFestivalOrganizer.BusinessLogik.PersistenceException">
+    <Position X="4.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PersistenceException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UltimateFestivalOrganizer.BusinessLogik.ServiceFactory">
+    <Position X="4.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>ServiceFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="UltimateFestivalOrganizer.BusinessLogik.IAdministrationServices" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQACAQMAAoABACAAAAoAQAAQAIgAAAAAABAABAAAAAA=</HashCode>
+      <FileName>IAdministrationServices.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

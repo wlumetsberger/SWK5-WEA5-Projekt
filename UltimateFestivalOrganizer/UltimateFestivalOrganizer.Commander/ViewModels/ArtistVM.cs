@@ -185,7 +185,8 @@ namespace UltimateFestivalOrganizer.Commander.ViewModels
             {
                 if(artist.Catagory != null)
                 {
-                    foreach(Catagory cat in Catagories)
+                    //return artist.Catagory;
+                   foreach(Catagory cat in Catagories)
                     {
                         if(cat.Id == artist.Catagory.Id)
                         {

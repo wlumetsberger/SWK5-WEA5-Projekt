@@ -206,7 +206,7 @@ namespace UltimateFestivalOrganizer.BusinessLogik
             {
                 program.Append("Artist: \t ").Append(p.Artist.Name).Append("\n");
                 program.Append("Venue: \t ").Append(p.Venue.Description).Append("(").Append(p.Venue.Longitude).Append("/").Append(p.Venue.Latitude).Append(") \n");
-                program.Append("Time: \t ").Append(p.StagingTime.ToString(format));
+                program.Append("Time: \t ").Append(p.StagingTime.ToString(format)).Append(": 00 ");
                 program.Append("\n \n ");
 
             }
