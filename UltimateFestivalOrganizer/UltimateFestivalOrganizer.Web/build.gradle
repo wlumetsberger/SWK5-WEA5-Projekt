@@ -1,0 +1,42 @@
+group 'at.wlumetsberger'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+
+
+repositories {
+    mavenCentral()
+}
+
+
+
+dependencies {
+    providedCompile 'javax.servlet:servlet-api:2.5'
+    providedCompile 'javax.enterprise:cdi-api:1.2'
+    compile 'com.sun.faces:jsf-api:2.2.5'
+    compile 'com.sun.faces:jsf-impl:2.2.5'
+    compile 'org.projectlombok:lombok:1.16.6'
+    compile 'com.google.code.gson:gson:2.5'
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+eclipse {
+    project{
+        natures 'org.springsource.ide.eclipse.gradle.core.nature' , 'org.eclipse.jdt.core.javanature' , 'org.eclipse.wst.common.project.facet.core.nature' , 'org.eclipse.wst.common.modulecore.ModuleCoreNature' , 'org.eclipse.jem.workbench.JavaEMFNature'
+    }
+    wtp {
+        facet {
+            facet name: "java", version: "1.8"          // Java version
+            facet name: "jst.web", version: "3.0"       // Dynamic Web Application
+            facet name: "jst.jsf", version: "2.2"       // Java Server Faces
+            facet name: "wst.jsdt.web", version: "1.0"  // JavaScript
+            facet name: "jst.cdi", version:"2.0" 		//CDI
+        }
+    }
+}

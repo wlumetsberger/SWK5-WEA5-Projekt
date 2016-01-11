@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+ 	xmlns:ui="http://java.sun.com/jsf/facelets"
+ 	xmlns:f="http://java.sun.com/jsf/core"
+ 	xmlns:jsf="http://xmlns.jcp.org/jsf"> 
+	<ui:composition template="template/baseViewTemplate.xhtml">
+		<ui:define name="content">
+       		<div class="row">
+       			<ui:repeat var="artist" value="#{showArtistBean.artists}">
+  					<div class="col-sm-6 col-md-4">
+    					<div class="thumbnail">
+      						
+      						<img jsf:rendered="#{not empty artist.picture}" src="data:image/png;base64,#{artist.picture}" alt="Foto des Künstlers"/>
+      						<p jsf:rendered="#{empty artist.picture}">
+      							Kein Bild verfügbar
+      						</p>
+      						<div class="caption">
+        						<h3>#{artist.name}</h3>
+        						<p>#{artist.email}</p>
+        						<p jsf:rendered="#{empty artist.link}" >
+        							<a href="#{artist.link}" class="btn btn-primary" disabled="disabled" role="button">zur Homepage</a>
+        						</p>
+        						<p jsf:rendered="#{not empty artist.link}" >
+        							<a href="#{artist.link}" class="btn btn-primary" role="button" target="_blank">zur Homepage</a>
+        						</p>
+        						
+      						</div>
+   					 	</div>
+  					</div>
+  				</ui:repeat>
+			</div>
+        </ui:define>
+	</ui:composition>
+</html>
