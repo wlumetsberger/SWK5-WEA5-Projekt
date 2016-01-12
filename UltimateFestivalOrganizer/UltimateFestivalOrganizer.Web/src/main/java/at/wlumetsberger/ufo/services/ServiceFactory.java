@@ -4,7 +4,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletContext;
 
 import at.wlumetsberger.ufo.services.interfaces.IAuthenticationService;
 import at.wlumetsberger.ufo.services.interfaces.IQueryService;

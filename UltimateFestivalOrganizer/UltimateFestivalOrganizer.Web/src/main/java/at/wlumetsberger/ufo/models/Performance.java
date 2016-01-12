@@ -1,6 +1,7 @@
 package at.wlumetsberger.ufo.models;
 
 import java.time.LocalTime;
+
 import lombok.Getter;
 import lombok.Setter;
 

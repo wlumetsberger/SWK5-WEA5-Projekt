@@ -6,14 +6,12 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import at.wlumetsberger.ufo.models.Artist;
-import at.wlumetsberger.ufo.services.QueryService;
 import at.wlumetsberger.ufo.services.exceptions.ServiceConnectionException;
 import at.wlumetsberger.ufo.services.interfaces.IQueryService;
 import lombok.Getter;
@@ -23,6 +21,11 @@ import lombok.Setter;
 @ViewScoped
 public class ShowArtistBean implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7239625611905988152L;
+
 	@Inject @Named("QueryService")
 	IQueryService queryService;
 	
