@@ -5,9 +5,8 @@
  */
 
 body {
-    background-color: #f8f8f8;
+    /*background-color: #fff;*/
 }
-
 #wrapper {
     width: 100%;
 }
@@ -15,7 +14,7 @@ body {
 #page-wrapper {
     padding: 0 15px;
     min-height: 568px;
-    background-color: #fff;
+   /* background-color: #fff;*/
 }
 
 @media(min-width:768px) {
@@ -25,6 +24,10 @@ body {
         padding: 0 30px;
         border-left: 1px solid #e7e7e7;
     }
+}
+
+.container-fluid{
+	padding-top: 10px;
 }
 
 .navbar-top-links {

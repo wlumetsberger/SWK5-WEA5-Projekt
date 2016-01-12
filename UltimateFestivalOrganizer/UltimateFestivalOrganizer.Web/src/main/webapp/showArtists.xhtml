@@ -10,7 +10,6 @@
        			<ui:repeat var="artist" value="#{showArtistBean.artists}">
   					<div class="col-sm-6 col-md-4">
     					<div class="thumbnail">
-      						
       						<img jsf:rendered="#{not empty artist.picture}" src="data:image/png;base64,#{artist.picture}" alt="Foto des Künstlers"/>
       						<p jsf:rendered="#{empty artist.picture}">
       							Kein Bild verfügbar

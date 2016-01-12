@@ -3,20 +3,16 @@ package at.wlumetsberger.ufo.services;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.faces.bean.ManagedProperty;
-import javax.inject.Inject;
-
-import com.google.gson.Gson;
-
-import at.wlumetsberger.ufo.beans.UserBean;
 import at.wlumetsberger.ufo.models.Artist;
 import at.wlumetsberger.ufo.services.exceptions.ServiceConnectionException;
 import at.wlumetsberger.ufo.services.interfaces.IQueryService;
-import lombok.Getter;
-import lombok.Setter;
 
 public class QueryService implements IQueryService {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4505103870287898720L;
 	private RestClient restClient;
 	
 	

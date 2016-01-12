@@ -2,32 +2,28 @@ package at.wlumetsberger.ufo.services;
 
 
 
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.faces.bean.ManagedProperty;
-import javax.servlet.ServletContext;
 
 import com.google.gson.Gson;
 
 import at.wlumetsberger.ufo.services.exceptions.ServiceConnectionException;
 import at.wlumetsberger.ufo.util.ApplicationConfiguration;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 
 public class RestClient implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5251008977944854832L;
 	@Getter @Setter
 	private String baseServiceUrl;
 	

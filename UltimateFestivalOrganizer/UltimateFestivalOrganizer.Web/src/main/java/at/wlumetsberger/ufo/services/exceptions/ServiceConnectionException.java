@@ -4,6 +4,10 @@ import lombok.Getter;
 
 public class ServiceConnectionException extends Exception{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1669245736975227565L;
 	@Getter
 	private int statuscode;
 	

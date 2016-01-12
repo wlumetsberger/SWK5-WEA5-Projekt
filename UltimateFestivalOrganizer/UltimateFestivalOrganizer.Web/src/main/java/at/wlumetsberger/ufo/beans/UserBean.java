@@ -10,7 +10,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import at.wlumetsberger.ufo.services.AuthenticationService;
 import at.wlumetsberger.ufo.services.exceptions.ServiceConnectionException;
 import at.wlumetsberger.ufo.services.interfaces.IAuthenticationService;
 import lombok.Getter;
@@ -21,6 +20,11 @@ import lombok.Setter;
 @SessionScoped
 public class UserBean implements Serializable {
 
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1106655528866778281L;
 
 	@Getter @Setter
 	private boolean loggedIn;
