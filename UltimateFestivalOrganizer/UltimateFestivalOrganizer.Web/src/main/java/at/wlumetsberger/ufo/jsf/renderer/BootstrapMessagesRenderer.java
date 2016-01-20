@@ -126,21 +126,28 @@ public class BootstrapMessagesRenderer extends MessagesRenderer {
         }
         
         writer.startElement("div", null);
-        writer.writeAttribute("class", "alert " + alertSeverityClass, "alert " + alertSeverityClass);
-        writer.startElement("a", component);
-        writer.writeAttribute("class", "close", "class");
-        writer.writeAttribute("data-dismiss", "alert", "data-dismiss");
-        writer.writeAttribute("href", "#", "href");
+        writer.writeAttribute("class", "alert " + alertSeverityClass + " alert-dismissible ", "alert " + alertSeverityClass + " alert-dismissible ");
+        writer.writeAttribute("role", "alert", "alert");
+        writer.startElement("button", component);
+        writer.writeAttribute("type", "button", "button");
+        writer.writeAttribute("class", "close", "close");
+        writer.writeAttribute("data-dismiss", "alert", "alert");
+        writer.writeAttribute("aria-label", "Close", "Close");
+        writer.startElement("span", component);
+        writer.writeAttribute("aria-hidden", "true", "true");
         writer.write("&times;");
-        writer.endElement("a");
+        writer.endElement("span");
+//        writer.writeAttribute("href", "#", "href");
+//        writer.write("&times;");
+        writer.endElement("button");
         
-        writer.startElement("ul", null);
+        //writer.startElement("ul", null);
         
         for (FacesMessage msg : messages){
             String summary = msg.getSummary() != null ? msg.getSummary() : "";
             String detail = msg.getDetail() != null ? msg.getDetail() : summary;
             
-            writer.startElement("li", component);
+            writer.startElement("p", component);
 
             if (uiMessages.isShowSummary()) {
                 writer.startElement("strong", component);
@@ -152,10 +159,10 @@ public class BootstrapMessagesRenderer extends MessagesRenderer {
                 writer.writeText(" " + detail, null);
             }
             
-            writer.endElement("li");
+            writer.endElement("p");
             msg.rendered();
         }
-        writer.endElement("ul");
+      //  writer.endElement("ul");
         writer.endElement("div");
     }
 }

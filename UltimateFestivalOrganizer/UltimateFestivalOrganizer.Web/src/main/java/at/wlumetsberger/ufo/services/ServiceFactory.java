@@ -5,6 +5,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import at.wlumetsberger.ufo.services.interfaces.IAdministrationService;
 import at.wlumetsberger.ufo.services.interfaces.IAuthenticationService;
 import at.wlumetsberger.ufo.services.interfaces.IQueryService;
 
@@ -23,5 +24,10 @@ public class ServiceFactory {
 	public  IAuthenticationService getAuthenticationService(){
 		return new AuthenticationService(this.client);
 	}	
+	
+	@Produces @Named("AdministrationService")
+	public IAdministrationService getAdministrationService(){
+		return new AdministrationService(this.client);
+	}
 	
 }

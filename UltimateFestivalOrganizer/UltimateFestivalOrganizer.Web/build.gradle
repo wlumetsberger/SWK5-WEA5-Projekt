@@ -11,6 +11,9 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+     maven {
+        url 'http://gmaps4jsf.googlecode.com/svn/trunk/gmaps4jsf-repo'
+    }
 }
 
 
@@ -22,6 +25,7 @@ dependencies {
     compile 'com.sun.faces:jsf-impl:2.2.5'
     compile 'org.projectlombok:lombok:1.16.6'
     compile 'com.google.code.gson:gson:2.5'
+    compile 'com.googlecode.gmaps4jsf:gmaps4jsf-core:3.0.0'
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }

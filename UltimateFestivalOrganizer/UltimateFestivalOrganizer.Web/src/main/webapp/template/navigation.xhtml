@@ -7,6 +7,7 @@
 
 <ui:composition>
 	<h:form id="navForm">
+	<h:messages id="loginMessages"/>
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 		<div class="navbar-header">
@@ -20,6 +21,7 @@
 		</div>
 
 		<!-- Top Menu -->
+		
 		<ul class="nav navbar-top-links navbar-right">
 			<li jsf:rendered="#{not userBean.loggedIn}" class="button">
 				<a jsf:id="showLogin" jsf:action="#{userBean.showLogin}"> 
@@ -57,7 +59,7 @@
 		</div>
 		
 		</nav>
-	
+		
 		<!-- Login -->
 		<div jsf:id="login" jsf:rendered="#{userBean.showLogginForm}"
 			tabindex="-1" class="modal show" id="loginModal" role="dialog"
@@ -83,7 +85,7 @@
 							</div>
 							<div class="form-group">
 								<button jsf:id="loggin" jsf:action="#{userBean.doLogin}" class="btn btn-primary btn-lg btn-block">Anmelden
-									<f:ajax execute="@form" render="@form globalMessages" />
+									<f:ajax execute="@form" render="@form loginMessages" />
 								</button>
 							</div>
 <!-- 						</form> -->

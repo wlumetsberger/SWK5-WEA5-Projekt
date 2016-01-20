@@ -2,16 +2,25 @@ package at.wlumetsberger.ufo.services;
 
 
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.sun.jndi.toolkit.url.Uri;
 
+import at.wlumetsberger.ufo.models.dataTransfer.IBaseDataTransferObject;
 import at.wlumetsberger.ufo.services.exceptions.ServiceConnectionException;
 import at.wlumetsberger.ufo.util.ApplicationConfiguration;
 import lombok.Getter;
@@ -37,7 +46,7 @@ public class RestClient implements Serializable {
 	
 	public <T>T fetchJsonData(String relativUrl, Class clazz)throws ServiceConnectionException{
 		HttpURLConnection conn = null;
-		Gson g = new Gson();
+		Gson g = new Gson();//new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mmZ").create();
 		try {
 			URL url = new URL(this.baseServiceUrl+relativUrl);
 			conn = (HttpURLConnection) url.openConnection();
@@ -58,9 +67,43 @@ public class RestClient implements Serializable {
 			
 		}
 	}
+	
+	public <T>T sendPostRequest(String relativUrl, String userId, IBaseDataTransferObject obj, Class clazz) throws ServiceConnectionException{
+		
+		HttpURLConnection connection = null;
+		Gson g = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+		try{
+			URL url = new URL(this.baseServiceUrl+relativUrl);
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Content-Type","application/json");
+            connection.setRequestProperty("Accept","application/json");
+			connection.setRequestProperty("Authorization", "Basic " + userId);
+			connection.setDoInput(true);
+			connection.setDoOutput(true);
+			String data = g.toJson(obj);
+			System.out.println("send data: "+ data);
+			
+			OutputStream outStream = new BufferedOutputStream(connection.getOutputStream());
+            outStream.write(data.getBytes());
+            outStream.flush();
+            outStream.close();
+            
+			if (connection.getResponseCode() != 200) {
+				throw new ServiceConnectionException(connection.getResponseCode(),connection.getResponseMessage());
+			}
+			Reader r = new InputStreamReader(connection.getInputStream());
+			return g.fromJson(r, clazz);
+		}catch(Exception e){
+			throw new ServiceConnectionException(0,e.getMessage());
+		}
+	}
+    
+	
 	public <T>T fetchJsonData(String relativUrl,Map<String,String>params,String userId, Class clazz)throws ServiceConnectionException{
 		HttpURLConnection conn = null;
-		Gson g = new Gson();
+		System.out.println("userId: "+ userId);
+		Gson g = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 		boolean first = true;
 		try {
 			StringBuilder queryString = new StringBuilder(this.baseServiceUrl);
@@ -82,18 +125,21 @@ public class RestClient implements Serializable {
 			}
 			URL url = new URL(queryString.toString());
 			conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
 			if(userId != null){
 				conn.setRequestProperty("Authorization", "Basic " + userId);
 			}
+							conn.setRequestMethod("GET");
+						
+			System.out.println("url: "+ url.toString());
+			
 			if (conn.getResponseCode() != 200) {
 				throw new ServiceConnectionException(conn.getResponseCode(),conn.getResponseMessage());
 			}
 			Reader r = new InputStreamReader(conn.getInputStream());
 			return g.fromJson(r, clazz);
 		} catch (Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			throw new ServiceConnectionException(0, e.getMessage());
 		}finally {
 			if(conn != null){

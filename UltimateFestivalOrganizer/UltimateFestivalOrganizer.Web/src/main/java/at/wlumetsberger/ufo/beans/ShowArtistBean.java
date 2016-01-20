@@ -31,10 +31,7 @@ public class ShowArtistBean implements Serializable {
 	
 	@Getter @Setter
 	private List<Artist> artists;
-	
-	@Inject
-	UserBean userBean;
-	
+		
 	@PostConstruct
 	private void initialize(){
 		try{

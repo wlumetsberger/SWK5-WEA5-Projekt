@@ -20,10 +20,6 @@ import lombok.Setter;
 @SessionScoped
 public class UserBean implements Serializable {
 
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1106655528866778281L;
 
 	@Getter @Setter
@@ -50,7 +46,7 @@ public class UserBean implements Serializable {
 	
 	@PostConstruct
 	public void initialize(){
-		System.out.println("initialize");
+		
 		this.loggedIn = false;
 		this.userName = null;
 		this.password = null;
@@ -65,6 +61,7 @@ public class UserBean implements Serializable {
 	}
 	
 	public void doLogin(){
+		System.out.println("doLogin");
 		String userPassword = this.userName + ":"+ this.password;
 		String encoding = new String(Base64.getEncoder().encode(userPassword.getBytes()));
 		try{

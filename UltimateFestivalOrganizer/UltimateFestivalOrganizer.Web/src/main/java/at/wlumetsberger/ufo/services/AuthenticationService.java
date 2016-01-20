@@ -22,8 +22,9 @@ public class AuthenticationService implements IAuthenticationService {
 	public boolean authenticateUser(String userId) throws ServiceConnectionException{
 		Map<String,String> params = new HashMap<>();
 		params.put("email", "test");
-		String result = restClient.<String>fetchJsonData("user",params,userId,String.class);
+		String result = restClient.<String>fetchJsonData("user",params,userId,String.class);	
 		return "test".equals(result);
 		
 	}
+	
 }

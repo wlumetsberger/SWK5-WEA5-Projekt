@@ -2,253 +2,345 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:m="http://code.google.com/p/gmaps4jsf/">
 <ui:composition template="template/baseViewTemplate.xhtml">
 	<ui:define name="customCss">
 		<link href="resources/css/timeline.css" rel="stylesheet" />
 		<link href="resources/bootstrap/css/datepicker.css" rel="stylesheet" />
+
 	</ui:define>
 	<ui:define name="customJs">
+
 		<script src="resources/bootstrap/js/bootstrap-datepicker.js" />
+
+
 		<script type="text/javascript">
-			$(function() {
-				$('#datetimepicker1').datetimepicker();
-			});
-			$(document).ready(function () {
-			     $('.collapse')
-			         .on('shown.bs.collapse', function() {
-			             $(this)
-			                 .parent()
-			                 .find(".glyphicon-plus")
-			                 .removeClass("glyphicon-plus")
-			                 .addClass("glyphicon-minus");
-			             })
-			         .on('hidden.bs.collapse', function() {
-			             $(this)
-			                 .parent()
-			                 .find(".glyphicon-minus")
-			                 .removeClass("glyphicon-minus")
-			                 .addClass("glyphicon-plus");
-			             });
-			         });
+			function showDialog() {
+				$('#performanceForm\\:detailsDialog').removeClass("hide")
+						.addClass("show");
+				registerDateTimePicker();
+				return true;
+			}
+			function hideDialog() {
+				$('#performanceForm\\:detailsDialog').removeClass("show")
+						.addClass("hide");
+				registerDateTimePicker();
+				return true;
+			}
+			function registerDateTimePicker() {
+				$('#veranstaltungsDatum').datetimepicker({
+					format : 'YYYY-MM-DD'
+				});
+				$('#newVeranstaltungsDatum').datetimepicker({
+					format : 'YYYY-MM-DD HH:mm'
+				});
+				
+				return true;
+			}
+			function setFieldDisabled( id, disabled){
+				$(id).prop('disabled', disabled);
+			}
+
+			$(document).ready(
+
+					function() {
+						registerDateTimePicker();
+
+						$('.collapse').on(
+								'shown.bs.collapse',
+								function() {
+									$(this).parent().find(".glyphicon-plus")
+											.removeClass("glyphicon-plus")
+											.addClass("glyphicon-minus");
+								}).on(
+								'hidden.bs.collapse',
+								function() {
+									$(this).parent().find(".glyphicon-minus")
+											.removeClass("glyphicon-minus")
+											.addClass("glyphicon-plus");
+								});
+					});
 		</script>
 	</ui:define>
 	<ui:define name="content">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h4 class="panel-title">
-        			<a data-toggle="collapse" href="#collapse1">
-        				Veranstalltung Suchen
-        				<span class="pull-right glyphicon glyphicon-plus"></span>
-        			</a>
-        			
-      			</h4>
-			</div>
-			<div id="collapse1" class="panel-collapse">
-			<div class="panel-body">
-				<div class="form-group">
-					<label for="veranstaltungsDatum">Datum</label>
-					<div class='input-group date' id='veranstaltungsDatum'>
-						<input type='text' class="form-control" /> <span
-							class="input-group-addon"> <span
-							class="glyphicon glyphicon-calendar"></span>
-						</span>
+		<h:form id="performanceForm">
+			<h:messages id="performanceMessages" />
+			<div jsf:id="searchPanel" class="panel panel-primary">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" href="#collapse1"> Veranstalltung
+							Suchen <span class="pull-right glyphicon glyphicon-plus"></span>
+						</a>
+
+					</h4>
+				</div>
+
+				<div id="collapse1" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div jsf:id="veranstaltungsDatumControl" class="form-group">
+							<label for="veranstaltungsDatum">Datum</label>
+							<div class='input-group date' id='veranstaltungsDatum'>
+								<h:inputText id="stagingDate"
+									value="#{showPerformancesBean.stagingDate}"
+									styleClass="form-control">
+									<f:ajax execute="@this"
+										render="@this, veranstaltungsDatumControl" />
+								</h:inputText>
+								<span class="input-group-addon"> <span
+									class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="search_venue">Ort</label>
+							<h:selectOneMenu id="search_venue" styleClass="form-control"
+								value="#{showPerformancesBean.venue}"
+								valueChangeListener="#{showPerformancesBean.venueChanged}">
+								<f:ajax execute="@this" render="@this, successPanel" />
+								<f:selectItems id="venueItems"
+									value="#{showPerformancesBean.venues}" />
+							</h:selectOneMenu>
+						</div>
+						<div class="form-group">
+							<label for="search_catagory">Kategorie</label>
+							<h:selectOneMenu id="search_catagory" styleClass="form-control"
+								value="#{showPerformancesBean.catagory}"
+								valueChangeListener="#{showPerformancesBean.catagoryChanged}">
+								<f:ajax execute="@this" render="@this, successPanel" />
+								<f:selectItems id="catagoryItems"
+									value="#{showPerformancesBean.catagories}" />
+							</h:selectOneMenu>
+						</div>
+						<div class="form-group">
+							<label for="search_artist">Künstler</label>
+							<h:selectOneMenu id="search_artist" styleClass="form-control"
+								value="#{showPerformancesBean.artist}"
+								valueChangeListener="#{showPerformancesBean.artistChanged}">
+								<f:ajax execute="@this" render="@this, successPanel" />
+								<f:selectItems id="artistItems"
+									value="#{showPerformancesBean.artists}" />
+							</h:selectOneMenu>
+						</div>
+
+						<button jsf:id="search"
+							jsf:action="#{showPerformancesBean.doSearch}" type="button"
+							class="btn btn-primary" data-toggle="collapse" href="#collapse1">
+							Suchen
+							<f:ajax execute="@this, stagingDate"
+								render="@this, searchPanel, successPanel"
+								onevent="registerDateTimePicker" />
+						</button>
+
 					</div>
 				</div>
-				<div class="form-group">
-					<label for="veranstaltungsName">Ort</label>
-					<h:selectOneMenu styleClass="form-control">
-						<f:selectItem itemLabel="asdf123" itemValue="1"/>
-						<f:selectItem itemLabel="asdf1234" itemValue="2"/>
-					</h:selectOneMenu>
-				</div>
-				<div class="form-group">
-					<label for="veranstaltungsName">Kategorie</label>
-					<h:selectOneMenu styleClass="form-control">
-						<f:selectItem itemLabel="asdf123" itemValue="1"/>
-						<f:selectItem itemLabel="asdf1234" itemValue="2"/>
-					</h:selectOneMenu>
-				</div>
-				<div class="form-group">
-					<label for="veranstaltungsName">Künstler</label>
-					<h:selectOneMenu styleClass="form-control">
-						<f:selectItem itemLabel="asdf123" itemValue="1"/>
-						<f:selectItem itemLabel="asdf1234" itemValue="2"/>
-					</h:selectOneMenu>
-				</div>
-				<div class="form-group">
-					<label for="veranstaltungsName">Bezeichnung</label>
-					<h:inputText value="" styleClass="form-control"/>
-				</div>
-			
-				<button type="button" class="btn btn-primary">Suchen</button>
-			</div>
-			</div>
-		</div>
-		<div class="panel panel-success">
-			<div class="panel-heading">Folgende Veranstaltungen wurden
-				gefunden</div>
-			<div class="panel-body">
-				<ul class="timeline">
-					<li>
-						<div class="timeline-badge">
-							<i class="glyphicon glyphicon-check"></i>
-						</div>
-						<div class="timeline-panel">
-							<div class="timeline-heading">
-								<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-								<p>
-									<small class="text-muted"><i
-										class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small>
-								</p>
-							</div>
-							<div class="timeline-body">
-								<p>Mussum ipsum cacilds, vidis litro abertis. Consetis
-									adipiscings elitis. Pra lá , depois divoltis porris, paradis.
-									Paisis, filhis, espiritis santis. Mé faiz elementum girarzis,
-									nisi eros vermeio, in elementis mé pra quem é amistosis quis
-									leo. Manduma pindureta quium dia nois paga. Sapien in monti
-									palavris qui num significa nadis i pareci latim. Interessantiss
-									quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
-							</div>
-						</div>
-					</li>
-					<li class="timeline-inverted">
-						<div class="timeline-badge warning">
-							<i class="glyphicon glyphicon-credit-card"></i>
-						</div>
-						<div class="timeline-panel">
-							<div class="timeline-heading">
-								<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-							</div>
-							<div class="timeline-body">
-								<p>Mussum ipsum cacilds, vidis litro abertis. Consetis
-									adipiscings elitis. Pra lá , depois divoltis porris, paradis.
-									Paisis, filhis, espiritis santis. Mé faiz elementum girarzis,
-									nisi eros vermeio, in elementis mé pra quem é amistosis quis
-									leo. Manduma pindureta quium dia nois paga. Sapien in monti
-									palavris qui num significa nadis i pareci latim. Interessantiss
-									quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
-								<p>Suco de cevadiss, é um leite divinis, qui tem lupuliz,
-									matis, aguis e fermentis. Interagi no mé, cursus quis, vehicula
-									ac nisi. Aenean vel dui dui. Nullam leo erat, aliquet quis
-									tempus a, posuere ut mi. Ut scelerisque neque et turpis posuere
-									pulvinar pellentesque nibh ullamcorper. Pharetra in mattis
-									molestie, volutpat elementum justo. Aenean ut ante turpis.
-									Pellentesque laoreet mé vel lectus scelerisque interdum cursus
-									velit auctor. Lorem ipsum dolor sit amet, consectetur
-									adipiscing elit. Etiam ac mauris lectus, non scelerisque augue.
-									Aenean justo massa.</p>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="timeline-badge danger">
-							<i class="glyphicon glyphicon-credit-card"></i>
-						</div>
-						<div class="timeline-panel">
-							<div class="timeline-heading">
-								<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-							</div>
-							<div class="timeline-body">
-								<p>Mussum ipsum cacilds, vidis litro abertis. Consetis
-									adipiscings elitis. Pra lá , depois divoltis porris, paradis.
-									Paisis, filhis, espiritis santis. Mé faiz elementum girarzis,
-									nisi eros vermeio, in elementis mé pra quem é amistosis quis
-									leo. Manduma pindureta quium dia nois paga. Sapien in monti
-									palavris qui num significa nadis i pareci latim. Interessantiss
-									quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
-							</div>
-						</div>
-					</li>
-					<li class="timeline-inverted">
-						<div class="timeline-panel">
-							<div class="timeline-heading">
-								<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-							</div>
-							<div class="timeline-body">
-								<p>Mussum ipsum cacilds, vidis litro abertis. Consetis
-									adipiscings elitis. Pra lá , depois divoltis porris, paradis.
-									Paisis, filhis, espiritis santis. Mé faiz elementum girarzis,
-									nisi eros vermeio, in elementis mé pra quem é amistosis quis
-									leo. Manduma pindureta quium dia nois paga. Sapien in monti
-									palavris qui num significa nadis i pareci latim. Interessantiss
-									quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="timeline-badge info">
-							<i class="glyphicon glyphicon-floppy-disk"></i>
-						</div>
-						<div class="timeline-panel">
-							<div class="timeline-heading">
-								<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-							</div>
-							<div class="timeline-body">
-								<p>Mussum ipsum cacilds, vidis litro abertis. Consetis
-									adipiscings elitis. Pra lá , depois divoltis porris, paradis.
-									Paisis, filhis, espiritis santis. Mé faiz elementum girarzis,
-									nisi eros vermeio, in elementis mé pra quem é amistosis quis
-									leo. Manduma pindureta quium dia nois paga. Sapien in monti
-									palavris qui num significa nadis i pareci latim. Interessantiss
-									quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
 
-								<div class="btn-group">
-									<button type="button"
-										class="btn btn-primary btn-sm dropdown-toggle"
-										data-toggle="dropdown">
-										<i class="glyphicon glyphicon-cog"></i> <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li><a href="#">Action</a></li>
-										<li><a href="#">Another action</a></li>
-										<li><a href="#">Something else here</a></li>
-										<li class="divider"></li>
-										<li><a href="#">Separated link</a></li>
-									</ul>
+
+			</div>
+			<div  jsf:id="successPanel">
+			
+			<div jsf:rendered="#{empty showPerformancesBean.filteredPerformances}" class="alert alert-danger">
+				<div >Kein Ergebniss gefunden</div>
+			</div>
+
+			<div jsf:rendered="#{not empty showPerformancesBean.filteredPerformances}" class="panel panel-success">
+				<div class="panel-heading">Folgende Veranstaltungen wurden
+					gefunden</div>
+					
+				<div class="panel-body">
+					<ul class="timeline">
+						<ui:repeat var="item"
+							value="#{showPerformancesBean.filteredPerformances}"
+							varStatus="status">
+							<li class="#{showPerformancesBean.getTimelineClass(status.even)}">
+								<div class="timeline-badge">
+									<i class="glyphicon glyphicon-check"></i>
+								</div>
+								<div class="timeline-panel">
+									<div class="timeline-heading">
+										<h4 class="timeline-title">#{item.artist.name}</h4>
+										<p>
+											<span class="text-muted"><i
+												class="glyphicon glyphicon-time"></i>
+												#{item.formattedStagingTime}</span>
+										</p>
+									</div>
+
+									<div class="timeline-body">
+										<h5>
+											Kategorie:
+											<h:outputText value="#{item.artist.catagory.name}" />
+										</h5>
+										<h5>
+											Ort:
+											<h:outputText value="#{item.venue.description}" />
+										</h5>
+										<p >
+
+
+											<a  id="showArtistLink_#{item.id}" href="#{artist.link}" class="btn btn-primary"
+												role="button"> Künstler </a>
+											<a id="showDialog1_#{item.id}"
+												class="btn btn-primary"
+												role="button"
+												jsf:action="#{showPerformancesBean.openDetails(item)}" >
+												Details
+												<f:ajax execute="@this"	
+													render="@form, performanceForm:detailsDialog"
+													onevent="showDialog" />
+											</a>
+											<script type="text/javascript">
+											    if(#{item.canceld}){
+											    	document.getElementById('showDialog1_#{item.id}').setAttribute("disabled","disabled");
+											    }else{
+											    	document.getElementById('showDialog1_#{item.id}').removeAttribute("disabled");
+											    }
+											    if(#{empty item.artist.link}){
+											    	document.getElementById('showArtistLink_#{item.id}').setAttribute("disabled","disabled");
+											    }else{
+											    	document.getElementById('showArtistLink_#{item.id}').removeAttribute("disabled");
+											    }
+											
+											</script>
+										</p>
+
+									</div>
+								</div>
+							</li>
+
+						</ui:repeat>
+					</ul>
+				</div>
+			</div>
+</div>
+			<div jsf:id="detailsDialog" tabindex="-1" class="modal" role="dialog"
+				aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content" role="document">
+						<div class="modal-header">
+							<button jsf:id="cancleLogin1" class="close" aria-hidden="true"
+								type="button" data-dismiss="modal">
+								×
+								<f:ajax execute="@this" render="@form " onevent="hideDialog" />
+							</button>
+							<h1 class="text-center">Veranstaltung</h1>
+						</div>
+						<div jsf:id="postponeBody"
+							jsf:rendered="#{showPerformancesBean.showPostpone}"
+							class="modal-body">
+							<div jsf:id="oldVeranstaltungsDatumControl" class="form-group">
+								<label for="oldVeranstaltungsDatum">Altes-Datum:</label>
+								<div class='input-group date' id='oldVeranstaltungsDatum'>
+									<h4>
+										<span class="text-muted"><i
+											class="glyphicon glyphicon-time"></i>
+											#{showPerformancesBean.currentPerformance.formattedStagingTime}</span>
+									</h4>
+								</div>
+							</div>
+							<div jsf:id="newVeranstaltungsDatumControl" class="form-group">
+								<label for="newVeranstaltungsDatum">Neues-Datum:</label>
+								<div class='input-group date' id='newVeranstaltungsDatum'>
+									<h:inputText id="newStagingDate"
+										value="#{showPerformancesBean.postPoneDate}"
+										styleClass="form-control">
+										<f:ajax execute="@this"
+											render="@this, newVeranstaltungsDatumControl" />
+									</h:inputText>
+									<span class="input-group-addon"> <span
+										class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+							</div>
+
+						</div>
+						<div jsf:id="normalBody"
+							jsf:rendered="#{not showPerformancesBean.showPostpone}"
+							class="modal-body">
+							<div class="container">
+								<div class="row">
+									<div class="col-md-4">
+										<h4>
+											<span class="text-muted"><i
+												class="glyphicon glyphicon-time"></i>
+												#{showPerformancesBean.currentPerformance.formattedStagingTime}</span>
+										</h4>
+
+										<h4>Kategorie</h4>
+										<p>#{showPerformancesBean.currentPerformance.artist.catagory.name}</p>
+										<h4>Künstler</h4>
+										<p>#{showPerformancesBean.currentPerformance.artist.name}</p>
+										<p>E-Mail:
+											#{showPerformancesBean.currentPerformance.artist.email}</p>
+										<h4>Ort</h4>
+										<p>#{showPerformancesBean.currentPerformance.venue.description}
+										</p>
+										<p>Beschreibung:
+											#{showPerformancesBean.currentPerformance.venue.shortDescription}</p>
+									</div>
+
+									<div class="col-md-8">
+										<!-- 																				<m:map width="200" height="200" -->
+										<!-- 																					rendered="#{showPerformancesBean.currentPerformance ne null}" -->
+										<!-- 																					latitude="#{showPerformancesBean.currentPerformance.venue.latitude}" -->
+										<!-- 																					longitude="#{showPerformancesBean.currentPerformance.venue.longitude}"> -->
+										<!-- 																					<m:marker -->
+										<!-- 																						latitude="#{showPerformancesBean.currentPerformance.venue.latitude}" -->
+										<!-- 																						longitude="#{showPerformancesBean.currentPerformance.venue.longitude}" /> -->
+										<!-- 																				</m:map> -->
+
+									</div>
 								</div>
 							</div>
 						</div>
-					</li>
-					<li>
-						<div class="timeline-panel">
-							<div class="timeline-heading">
-								<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-							</div>
-							<div class="timeline-body">
-								<p>Mussum ipsum cacilds, vidis litro abertis. Consetis
-									adipiscings elitis. Pra lá , depois divoltis porris, paradis.
-									Paisis, filhis, espiritis santis. Mé faiz elementum girarzis,
-									nisi eros vermeio, in elementis mé pra quem é amistosis quis
-									leo. Manduma pindureta quium dia nois paga. Sapien in monti
-									palavris qui num significa nadis i pareci latim. Interessantiss
-									quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
+						<div class="modal-footer">
+							<div class="col-md-12">
+								<h:commandLink
+									rendered="#{userBean.loggedIn and not showPerformancesBean.showPostpone and not showPerformancesBean.currentPerformance.canceld}"
+									action="#{showPerformancesBean.cancelPerformance()}"
+									styleClass="btn btn-primary">
+													Absagen
+													<f:ajax execute="@this"
+										render="@form, performanceForm:detailsDialog"
+										onevent="hideDialog" />
+								</h:commandLink>
+								<h:commandLink
+									rendered="#{userBean.loggedIn and not showPerformancesBean.showPostpone and not showPerformancesBean.currentPerformance.canceld}"
+									action="#{showPerformancesBean.openPostpone()}"
+									styleClass="btn btn-primary">
+													Verschieben
+													<f:ajax execute="@this"
+										render="performanceForm:detailsDialog" onevent="showDialog" />
+								</h:commandLink>
+								<h:commandLink rendered="#{showPerformancesBean.showPostpone}"
+									action="#{showPerformancesBean.cancleOpenPostpone()}"
+									styleClass="btn btn-primary">
+													Zurück
+													<f:ajax execute="@this"
+										render="performanceForm:detailsDialog" onevent="showDialog" />
+								</h:commandLink>
+								<h:commandLink rendered="#{showPerformancesBean.showPostpone}"
+									action="#{showPerformancesBean.doPostpone()}"
+									styleClass="btn btn-primary">
+													Speichern
+													<f:ajax execute="@form"
+										render="@form performanceForm:detailsDialog" onevent="hideDialog" />
+								</h:commandLink>
+
+								<button jsf:id="abortDialog" class="btn" aria-hidden="true"
+									data-dismiss="modal">
+									Abbrechen
+									<f:ajax execute="@this" render="@form" onevent="hideDialog" />
+								</button>
 							</div>
 						</div>
-					</li>
-					<li class="timeline-inverted">
-						<div class="timeline-badge success">
-							<i class="glyphicon glyphicon-thumbs-up"></i>
-						</div>
-						<div class="timeline-panel">
-							<div class="timeline-heading">
-								<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-							</div>
-							<div class="timeline-body">
-								<p>Mussum ipsum cacilds, vidis litro abertis. Consetis
-									adipiscings elitis. Pra lá , depois divoltis porris, paradis.
-									Paisis, filhis, espiritis santis. Mé faiz elementum girarzis,
-									nisi eros vermeio, in elementis mé pra quem é amistosis quis
-									leo. Manduma pindureta quium dia nois paga. Sapien in monti
-									palavris qui num significa nadis i pareci latim. Interessantiss
-									quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
-							</div>
-						</div>
-					</li>
-				</ul>
+					</div>
+				</div>
 			</div>
-		</div>
+
+			<!-- Postpone dialog -->
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>

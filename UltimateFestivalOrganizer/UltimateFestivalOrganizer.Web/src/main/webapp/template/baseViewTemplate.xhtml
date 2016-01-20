@@ -6,15 +6,14 @@
     <h:head>
     	<link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
  		<link href="resources/css/dashboard.css" rel="stylesheet"/>
+ 		<script src="https://maps.googleapis.com/maps/api/js"/>
  		<meta name="viewport" content="width=device-width, initial-scale=1" />
     	<ui:insert name="customCss"/>
-
-    	
     </h:head>
     
     <h:body>    	
     	<div id="wrapper">
-    		<h:messages id="globalMessages"/>
+    		    		
     		<ui:include src="navigation.xhtml"/>
     		<div id="page-wrapper">
     			<ui:include src="content.xhtml"/>
@@ -22,6 +21,7 @@
     	</div>
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="resources/bootstrap/js/bootstrap.min.js"/>
+		
 		<ui:insert name="customJs"/>
     </h:body>
   </html>
