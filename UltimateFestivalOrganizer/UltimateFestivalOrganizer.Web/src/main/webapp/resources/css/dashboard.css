@@ -231,6 +231,10 @@ body {
     position: relative;
     clear: both;
 }
+.map{
+	width: 250px;
+	height: 250px;
+}
 
 table.dataTable thead .sorting,
 table.dataTable thead .sorting_asc,

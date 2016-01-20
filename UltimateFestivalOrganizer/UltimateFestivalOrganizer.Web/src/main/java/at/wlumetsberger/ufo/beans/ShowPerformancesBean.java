@@ -162,7 +162,7 @@ public class ShowPerformancesBean implements Serializable {
 	public void openDetails(Performance current) {
 		this.currentPerformance = current;
 		this.showPostpone = false;
-		System.out.println("long: " + current.getVenue().getLongitude() + " lat: " + current.getVenue().getLatitude());
+		System.out.println("long: " + currentPerformance.getVenue().getLongitude() + " lat: " + currentPerformance.getVenue().getLatitude());
 	}
 	public void openPostpone(){
 		this.showPostpone = true;
@@ -202,6 +202,7 @@ public class ShowPerformancesBean implements Serializable {
 				this.artist = String.valueOf(currentPerformance.getArtist().getId());
 				this.catagory = String.valueOf(currentPerformance.getArtist().getCatagory());
 				this.venue = String.valueOf(currentPerformance.getVenue().getId());
+				this.showPostpone=false;
 				this.doSearch();
 				return;
 			}			

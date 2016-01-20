@@ -14,9 +14,23 @@
 	<ui:define name="customJs">
 
 		<script src="resources/bootstrap/js/bootstrap-datepicker.js" />
-
+		<script src='http://maps.googleapis.com/maps/api/js' />
 
 		<script type="text/javascript">
+			function initializeDialog(lat, lng) {
+				showDialog();
+				showMap(lat, lng);
+				return true;
+			}
+			function showMap(lat, lng) {
+				var mapProp = {
+					center : new google.maps.LatLng(lat, lng),
+					zoom : 16,
+					mapTypeId : google.maps.MapTypeId.ROADMAP
+				};
+				var map = new google.maps.Map(document.getElementById("map"),
+						mapProp);
+			}
 			function showDialog() {
 				$('#performanceForm\\:detailsDialog').removeClass("hide")
 						.addClass("show");
@@ -36,18 +50,13 @@
 				$('#newVeranstaltungsDatum').datetimepicker({
 					format : 'YYYY-MM-DD HH:mm'
 				});
-				
+
 				return true;
-			}
-			function setFieldDisabled( id, disabled){
-				$(id).prop('disabled', disabled);
 			}
 
 			$(document).ready(
-
 					function() {
 						registerDateTimePicker();
-
 						$('.collapse').on(
 								'shown.bs.collapse',
 								function() {
@@ -138,82 +147,89 @@
 
 
 			</div>
-			<div  jsf:id="successPanel">
-			
-			<div jsf:rendered="#{empty showPerformancesBean.filteredPerformances}" class="alert alert-danger">
-				<div >Kein Ergebniss gefunden</div>
-			</div>
+			<div jsf:id="successPanel">
 
-			<div jsf:rendered="#{not empty showPerformancesBean.filteredPerformances}" class="panel panel-success">
-				<div class="panel-heading">Folgende Veranstaltungen wurden
-					gefunden</div>
-					
-				<div class="panel-body">
-					<ul class="timeline">
-						<ui:repeat var="item"
-							value="#{showPerformancesBean.filteredPerformances}"
-							varStatus="status">
-							<li class="#{showPerformancesBean.getTimelineClass(status.even)}">
-								<div class="timeline-badge">
-									<i class="glyphicon glyphicon-check"></i>
-								</div>
-								<div class="timeline-panel">
-									<div class="timeline-heading">
-										<h4 class="timeline-title">#{item.artist.name}</h4>
-										<p>
-											<span class="text-muted"><i
-												class="glyphicon glyphicon-time"></i>
-												#{item.formattedStagingTime}</span>
-										</p>
+				<div
+					jsf:rendered="#{empty showPerformancesBean.filteredPerformances}"
+					class="alert alert-danger">
+					<div>Kein Ergebniss gefunden</div>
+				</div>
+
+				<div
+					jsf:rendered="#{not empty showPerformancesBean.filteredPerformances}"
+					class="panel panel-success">
+					<div class="panel-heading">Folgende Veranstaltungen wurden
+						gefunden</div>
+
+					<div class="panel-body">
+						<ul class="timeline">
+							<ui:repeat var="item"
+								value="#{showPerformancesBean.filteredPerformances}"
+								varStatus="status">
+								<li
+									class="#{showPerformancesBean.getTimelineClass(status.even)}">
+									<div class="timeline-badge">
+										<i class="glyphicon glyphicon-check"></i>
 									</div>
+									<div class="timeline-panel">
+										<div class="timeline-heading">
+											<h4 class="timeline-title">#{item.artist.name}</h4>
+											<p>
+												<span class="text-muted"><i
+													class="glyphicon glyphicon-time"></i>
+													#{item.formattedStagingTime}</span>
+											</p>
+										</div>
 
-									<div class="timeline-body">
-										<h5>
-											Kategorie:
-											<h:outputText value="#{item.artist.catagory.name}" />
-										</h5>
-										<h5>
-											Ort:
-											<h:outputText value="#{item.venue.description}" />
-										</h5>
-										<p >
+										<div class="timeline-body">
+											<h5>
+												Kategorie:
+												<h:outputText value="#{item.artist.catagory.name}" />
+											</h5>
+											<h5>
+												Ort:
+												<h:outputText value="#{item.venue.description}" />
+											</h5>
+											<p jsf:rendered="#{empty item.artist.link}">
 
 
-											<a  id="showArtistLink_#{item.id}" href="#{artist.link}" class="btn btn-primary"
-												role="button"> Künstler </a>
-											<a id="showDialog1_#{item.id}"
-												class="btn btn-primary"
-												role="button"
-												jsf:action="#{showPerformancesBean.openDetails(item)}" >
-												Details
-												<f:ajax execute="@this"	
-													render="@form, performanceForm:detailsDialog"
-													onevent="showDialog" />
-											</a>
-											<script type="text/javascript">
-											    if(#{item.canceld}){
-											    	document.getElementById('showDialog1_#{item.id}').setAttribute("disabled","disabled");
-											    }else{
-											    	document.getElementById('showDialog1_#{item.id}').removeAttribute("disabled");
-											    }
-											    if(#{empty item.artist.link}){
-											    	document.getElementById('showArtistLink_#{item.id}').setAttribute("disabled","disabled");
-											    }else{
-											    	document.getElementById('showArtistLink_#{item.id}').removeAttribute("disabled");
-											    }
-											
-											</script>
-										</p>
+												<a href="#{item.artist.link}" class="btn btn-primary"
+													disabled="disabled" role="button"> Künstler </a>
+												<h:commandLink style="margin-left:10px;"
+													action="#{showPerformancesBean.openDetails(item)}"
+													styleClass="btn btn-primary">
+													Details
+													<f:ajax execute="@this"
+														render="@form, performanceForm:detailsDialog"
+														onevent="function() {initializeDialog( #{item.venue.latitude}, #{item.venue.longitude} );} " />
+												</h:commandLink>
+											</p>
+											<p jsf:rendered="#{not empty item.artist.link}">
 
+												<a href="#{artist.link}" class="btn btn-primary"
+													role="button" target="_blank">Künstler</a>
+												<h:commandLink style="margin-left:10px;"
+													action="#{showPerformancesBean.openDetails(item)}"
+													disabled="#{item.canceld}" styleClass="btn btn-primary">
+													Details
+													<f:ajax execute="@this"
+														render="@form, performanceForm:detailsDialog"
+														onevent="function() {initializeDialog( #{item.venue.latitude}, #{item.venue.longitude} );} " />
+												</h:commandLink>
+
+
+
+											</p>
+
+										</div>
 									</div>
-								</div>
-							</li>
+								</li>
 
-						</ui:repeat>
-					</ul>
+							</ui:repeat>
+						</ul>
+					</div>
 				</div>
 			</div>
-</div>
 			<div jsf:id="detailsDialog" tabindex="-1" class="modal" role="dialog"
 				aria-hidden="true">
 				<div class="modal-dialog modal-lg">
@@ -281,15 +297,7 @@
 									</div>
 
 									<div class="col-md-8">
-										<!-- 																				<m:map width="200" height="200" -->
-										<!-- 																					rendered="#{showPerformancesBean.currentPerformance ne null}" -->
-										<!-- 																					latitude="#{showPerformancesBean.currentPerformance.venue.latitude}" -->
-										<!-- 																					longitude="#{showPerformancesBean.currentPerformance.venue.longitude}"> -->
-										<!-- 																					<m:marker -->
-										<!-- 																						latitude="#{showPerformancesBean.currentPerformance.venue.latitude}" -->
-										<!-- 																						longitude="#{showPerformancesBean.currentPerformance.venue.longitude}" /> -->
-										<!-- 																				</m:map> -->
-
+										<div id="map" style="width: 250px; height: 250px;" />
 									</div>
 								</div>
 							</div>
@@ -325,7 +333,8 @@
 									styleClass="btn btn-primary">
 													Speichern
 													<f:ajax execute="@form"
-										render="@form performanceForm:detailsDialog" onevent="hideDialog" />
+										render="@form performanceForm:detailsDialog"
+										onevent="hideDialog" />
 								</h:commandLink>
 
 								<button jsf:id="abortDialog" class="btn" aria-hidden="true"
@@ -338,8 +347,6 @@
 					</div>
 				</div>
 			</div>
-
-			<!-- Postpone dialog -->
 		</h:form>
 	</ui:define>
 </ui:composition>
