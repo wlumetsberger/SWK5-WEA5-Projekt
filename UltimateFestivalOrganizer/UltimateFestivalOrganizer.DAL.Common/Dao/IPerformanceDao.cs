@@ -12,6 +12,7 @@ namespace UltimateFestivalOrganizer.DAL.Common.Dao
         IList<Performance> FindPerformanceForArtistsAfterDate(Artist artist, DateTime d);
         IList<Performance> FindPerformanceForVenueByDay(Venue v, DateTime d);
         IList<Performance> FindPerormanceByDay(DateTime d);
+        IList<Performance> FindPerformanceByCatagory(Catagory c);
         bool DeletePerformancesByDay(DateTime day);
     }
 }

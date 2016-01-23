@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Json;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using UltimateFestivalOrganizer.CreateTestData.RandomApi.Domain;
@@ -21,12 +22,16 @@ namespace UltimateFestivalOrganizer.CreateTestData
         static void Main(string[] args)
         {
 
-            CreateCatagories();
-            CreateArtists();
-            CreateVenues();
-            CreatePerformances();
-            
-           
+
+            // CreateCatagories();
+            //           CreateArtists();
+            //           CreateVenues();
+                     CreatePerformances();
+           /* HashAlgorithm algo = new SHA256Managed();
+            byte[] pw = algo.ComputeHash(Encoding.Default.GetBytes("admin@test.at|admin"));
+            string pass = System.BitConverter.ToString(pw);
+            Console.WriteLine("Generated PW: " + pass);*/
+
 
             Console.ReadKey();
         }
@@ -53,28 +58,44 @@ namespace UltimateFestivalOrganizer.CreateTestData
         }
         private static void CreatePerformances()
         {
+            Console.WriteLine("Insert Performances ");
             IVenueDao venueDao = DALFactory.CreateVenueDao(DALFactory.CreateDatabase());
             IPerformanceDao performanceDao = DALFactory.CreatePerformanceDao(DALFactory.CreateDatabase());
             IArtistDao artistDao = DALFactory.CreateArtistDao(DALFactory.CreateDatabase());
-
-            for(int i=0; i<3; i++)
+            int year = 2016;
+            int month = 01;
+            int day = 23;
+            for (int i=0; i<3; i++)
             {
-                DateTime time = DateTime.Now;
+                int count = 1;
+                int hour = 14;
+                int min = 00;
+                int second = 00;
                 for (int j = 1; j <= 40; j++)
                 {
+                    count++;
+                    if(count == 10)
+                    {
+                        hour= hour +2;
+                        count = 1;
+                    }
+                    DateTime dt = new DateTime(year, month, day, hour, min, second);
+
                     Venue venue = venueDao.findById(j);
                     Artist artist = artistDao.findById(j);
                     Performance p = new Performance();
                     p.Artist = artist;
                     p.Venue = venue;
-                    p.StagingTime = time;
+                    p.StagingTime = dt;
+                    performanceDao.Insert(p);
                 }
-                time.AddDays(1);
+                day++;
             }
            
         }
         private static void CreateCatagories()
         {
+            Console.WriteLine("Insert Catagories ");
             ICatagoryDao catagoryDao = DALFactory.CreateCatagoryDao(DALFactory.CreateDatabase());
             for (int i = 1; i <= 10; i++)
             {
@@ -86,6 +107,7 @@ namespace UltimateFestivalOrganizer.CreateTestData
         }
         private static void CreateArtists()
         {
+            Console.WriteLine("Insert Artists ");
             Random r = new Random();
             RootObject generatedEntries = FetchPersons();
             IArtistDao dao = DALFactory.CreateArtistDao(DALFactory.CreateDatabase());
@@ -106,6 +128,7 @@ namespace UltimateFestivalOrganizer.CreateTestData
         }
         private static void CreateVenues()
         {
+            Console.WriteLine("Insert Venues ");
 
             Random rand = new Random();
             IVenueDao venueDao = DALFactory.CreateVenueDao(DALFactory.CreateDatabase());
@@ -113,10 +136,13 @@ namespace UltimateFestivalOrganizer.CreateTestData
             {
                 Venue v = new Venue();
                 v.Address = "My Random Place " + i;
-                v.Description = "This is Random Stage No " + 1;
-                v.ShortDescription = "Random Stage " + 1;
-                v.Latitude = rand.Next(1, 100000);
-                v.Longitude = rand.Next(1, 100000);
+                v.Description = "This is Random Stage No " + i;
+                v.ShortDescription = "Random Stage " + i;
+                v.Latitude = (int) (48.30613 * 1000000);
+                v.Longitude = (int) (14.286813 * 1000000);
+                v.Latitude = v.Latitude + rand.Next(1, 100);
+                v.Longitude = v.Longitude + rand.Next(1, 100);
+
                 venueDao.Insert(v);
             }
         }

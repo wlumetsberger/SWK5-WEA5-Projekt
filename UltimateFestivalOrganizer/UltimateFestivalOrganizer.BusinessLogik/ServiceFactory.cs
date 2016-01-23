@@ -8,16 +8,38 @@ namespace UltimateFestivalOrganizer.BusinessLogik
 {
     public static class ServiceFactory
     {
-        private static IAdministrationServices service;
+        private static IAdministrationServices administrationService;
+        private static IAuthenticationService authenticationService;
+        private static IQueryService queryService;
 
         public static IAdministrationServices GetAdministrationService()
         {
-            if(service == null)
+            if(administrationService == null)
             {
-                service = new AdministrationServices();
+                administrationService = new AdministrationServices();
             }
-            return service;
+            return administrationService;
         }
+
+        public static IAuthenticationService GetAuthenticationService()
+        {
+            if(authenticationService == null)
+            {
+                authenticationService = new AuthenticationService();
+            }
+            return authenticationService;
+        }
+
+        public static IQueryService GetQueryService()
+        {
+            if(queryService == null)
+            {
+                queryService = new QueryService();
+            }
+            return queryService;
+        }
+
+
 
     }
 }
