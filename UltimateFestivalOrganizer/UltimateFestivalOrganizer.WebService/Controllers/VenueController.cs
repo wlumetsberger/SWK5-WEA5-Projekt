@@ -17,7 +17,10 @@ namespace UltimateFestivalOrganizer.WebService.Controllers
         {
             service = ServiceFactory.GetQueryService();
         }
-
+        /// <summary>
+        /// GET api/venue/getAll
+        /// </summary>
+        /// <returns>All venues found</returns>
         [Route("api/venue/getAll")]
         public IList<Venue> GetAll()
         {

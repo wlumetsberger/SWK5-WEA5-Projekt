@@ -192,35 +192,30 @@ namespace UltimateFestivalOrganizer.Commander.ViewModels
                     DateTime d = CurrentDate.Date;
                     Performance col1 = new Performance();
                     col1.StagingTime = d.AddHours(14);
-                    col1.StagingTime = col1.StagingTime.AddMinutes(30);
                     Performance col2 = new Performance();
                     col2.StagingTime = d.AddHours(15);
-                    col2.StagingTime = col2.StagingTime.AddMinutes(30);
                     Performance col3 = new Performance();
                     col3.StagingTime = d.AddHours(16);
-                    col3.StagingTime = col3.StagingTime.AddMinutes(30);
                     Performance col4 = new Performance();
                     col4.StagingTime = d.AddHours(17);
-                    col4.StagingTime = col4.StagingTime.AddMinutes(30);
                     Performance col5 = new Performance();
                     col5.StagingTime = d.AddHours(18);
-                    col5.StagingTime = col5.StagingTime.AddMinutes(30);
 
                     foreach (Performance p in performances)
                     {
-                        if (p.StagingTime.Hour >= 18 && p.StagingTime.Minute > 0)
+                        if (p.StagingTime.Hour >= 18)
                         {
                             col5 = p;
                         }
-                        else if (p.StagingTime.Hour >= 17 && p.StagingTime.Minute > 0)
+                        else if (p.StagingTime.Hour >= 17 )
                         {
                             col4 = p;
                         }
-                        else if (p.StagingTime.Hour >= 16 && p.StagingTime.Minute > 0)
+                        else if (p.StagingTime.Hour >= 16)
                         {
                             col3 = p;
                         }
-                        else if (p.StagingTime.Hour >= 15 && p.StagingTime.Minute > 0)
+                        else if (p.StagingTime.Hour >= 15)
                         {
                             col2 = p;
                         }

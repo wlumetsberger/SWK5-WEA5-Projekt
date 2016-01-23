@@ -19,11 +19,11 @@ namespace UltimateFestivalOrganizer.WebService.Controllers
         {
             service = ServiceFactory.GetQueryService();
         }
+
         /// <summary>
-        /// // GET api/Artists/GetAll
+        /// // GET api/artist/getAll
         /// </summary>
         /// <returns> JSON Array with Artists</returns>
-        //[BasicAuthorizeAttribute]
         [Route("api/artist/getAll")]
         public IList<Artist> GetAll()
         {
@@ -31,10 +31,9 @@ namespace UltimateFestivalOrganizer.WebService.Controllers
 
         }
         /// <summary>
-        /// // GET api/Artists/GetArtist/{email}
+        /// // GET api/artist/getArtistByMail
         /// </summary>
         /// <returns> JSON Array with Artists</returns>
-        // [BasicAuthorizeAttribute]
         [Route("api/artist/getArtistByMail")]
         public Artist GetArtist(string id)
         {

@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateFestivalOrganizer.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateFestivalOrganizer.BusinessLogik", "UltimateFestivalOrganizer.BusinessLogik\UltimateFestivalOrganizer.BusinessLogik.csproj", "{D45BB2F8-0E9E-4A87-A9E5-C39B7E97B153}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateFestivalOrganizer.BusinessLogik.Test", "UltimateFestivalOrganizer.BusinessLogik.Test\UltimateFestivalOrganizer.BusinessLogik.Test.csproj", "{D7584DAB-E789-41DD-878A-EEB7EB8686C5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateFestivalOrganizer.Commander", "UltimateFestivalOrganizer.Commander\UltimateFestivalOrganizer.Commander.csproj", "{3C1DA1E1-1FFC-44A0-8B19-21D754E7F59A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateFestivalOrganizer.CreateTestData", "UltimateFestivalOrganizer.CreateTestData\UltimateFestivalOrganizer.CreateTestData.csproj", "{C163534A-AE9E-47D9-BD9F-12AC29A08304}"
@@ -95,22 +93,6 @@ Global
 		{D45BB2F8-0E9E-4A87-A9E5-C39B7E97B153}.Release|x64.Build.0 = Release|Any CPU
 		{D45BB2F8-0E9E-4A87-A9E5-C39B7E97B153}.Release|x86.ActiveCfg = Release|Any CPU
 		{D45BB2F8-0E9E-4A87-A9E5-C39B7E97B153}.Release|x86.Build.0 = Release|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Debug|ARM.Build.0 = Debug|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Debug|x64.Build.0 = Debug|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Debug|x86.Build.0 = Debug|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Release|ARM.ActiveCfg = Release|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Release|ARM.Build.0 = Release|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Release|x64.ActiveCfg = Release|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Release|x64.Build.0 = Release|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Release|x86.ActiveCfg = Release|Any CPU
-		{D7584DAB-E789-41DD-878A-EEB7EB8686C5}.Release|x86.Build.0 = Release|Any CPU
 		{3C1DA1E1-1FFC-44A0-8B19-21D754E7F59A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3C1DA1E1-1FFC-44A0-8B19-21D754E7F59A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C1DA1E1-1FFC-44A0-8B19-21D754E7F59A}.Debug|ARM.ActiveCfg = Debug|Any CPU

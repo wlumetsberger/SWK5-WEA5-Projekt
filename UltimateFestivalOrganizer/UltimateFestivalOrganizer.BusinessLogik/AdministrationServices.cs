@@ -15,10 +15,14 @@ namespace UltimateFestivalOrganizer.BusinessLogik
     public class AdministrationServices : IAdministrationServices
     {
         private IDatabase database;
+        private IQueryService queryService;
+        private IAuthenticationService authenticationService;
 
         public AdministrationServices()
         {
             database = DALFactory.CreateDatabase();
+            queryService = ServiceFactory.GetQueryService();
+            authenticationService = ServiceFactory.GetAuthenticationService();
         }
 
         public bool CheckIsCatagoryInUse(Catagory catagory)
@@ -75,14 +79,12 @@ namespace UltimateFestivalOrganizer.BusinessLogik
 
         public IList<Artist> GetArtists()
         {
-            IArtistDao dao = DALFactory.CreateArtistDao(database);
-            return dao.findAllWithoutDeleted();
+            return queryService.QueryArtists();
         }
 
         public IList<Catagory> GetCatagories()
         {
-            ICatagoryDao dao = DALFactory.CreateCatagoryDao(database);
-            return dao.findAll();
+            return queryService.QueryCatagories();
         }
 
         public Artist SaveArtist(Artist artist)
@@ -122,8 +124,7 @@ namespace UltimateFestivalOrganizer.BusinessLogik
 
         public IList<Venue> GetVenues()
         {
-            IVenueDao dao = DALFactory.CreateVenueDao(database);
-            return dao.findAll();
+           return  queryService.QueryVenues();
         }
 
         private bool canDeleteVenue(Venue venue)
@@ -162,27 +163,16 @@ namespace UltimateFestivalOrganizer.BusinessLogik
 
         public User CheckUser(string userName, string password)
         {
-            IUserDao dao = DALFactory.CreateUserDao(database);
-            HashAlgorithm algo = new SHA256Managed();
-            byte[] pw = algo.ComputeHash( Encoding.Default.GetBytes(userName + "|" + password));
-            string pass = System.BitConverter.ToString(pw);
-            User u = dao.findByUniqueProperty(typeof(User).GetProperty("Email"), userName);
-            if(u != null && u.Password.Equals(pass))
-            {
-                return u;
-            }
-            return null;
+            return authenticationService.AuthenticateAndReturnValidUser(userName, password);
         }
 
         public IList<Performance> GetPerformancesByVenueAndDay(Venue venue, DateTime day)
         {
-            IPerformanceDao dao = DALFactory.CreatePerformanceDao(database);
-            return dao.FindPerformanceForVenueByDay(venue, day);
+            return queryService.QueryPerformancesByVenueAndDay(venue, day);
         }
         public IList<Performance> GetPerformancesByDay(DateTime day)
         {
-            IPerformanceDao dao = DALFactory.CreatePerformanceDao(database);
-            return dao.FindPerormanceByDay(day);
+            return queryService.QueryPerfomancesByDay(day);
         }
         public bool DeletePerformancesByDay(DateTime day)
         {

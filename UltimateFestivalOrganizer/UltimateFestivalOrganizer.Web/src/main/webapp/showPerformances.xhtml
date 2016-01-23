@@ -158,6 +158,7 @@
 					class="alert alert-danger">
 					<div>Kein Ergebniss gefunden</div>
 				</div>
+				
 
 				<div
 					jsf:rendered="#{not empty showPerformancesBean.filteredPerformances}"
@@ -338,7 +339,7 @@
 								
 								<h:commandLink rendered="#{showPerformancesBean.showPostpone}"
 									action="#{showPerformancesBean.doPostpone()}"
-									styleClass="btn btn-primary">, 
+									styleClass="btn btn-primary">
 													Speichern
 													<f:ajax execute="@form"
 										render="@form performanceForm:detailsDialog, successPanel"

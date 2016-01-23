@@ -89,7 +89,6 @@ namespace UltimateFestivalOrganizer.BusinessLogik
             {
                 if(p.Id == toPostpone.Id)
                 {
-                    // continue loop it is the one we want to postpone
                     continue;
                 }
 
@@ -97,8 +96,7 @@ namespace UltimateFestivalOrganizer.BusinessLogik
                 DateTime postPoneDate = new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
                 DateTime currentDate = new DateTime(p.StagingTime.Year, p.StagingTime.Month, p.StagingTime.Day, p.StagingTime.Hour, 0, 0);
 
-                // equal artist on same day
-                // check if one hour is between the performance
+
                 if (toPostpone.Artist.Id == p.Artist.Id)
                 {
                    if(postPoneDate >= currentDate.AddHours(-2) && postPoneDate <= currentDate.AddHours(2))
@@ -140,6 +138,12 @@ namespace UltimateFestivalOrganizer.BusinessLogik
             p.Canceld = true;
             return dao.Update(p);
 
+        }
+
+        public IList<Performance> QueryPerformancesByVenueAndDay(Venue venue, DateTime day)
+        {
+            IPerformanceDao dao = DALFactory.CreatePerformanceDao(database);
+            return dao.FindPerformanceForVenueByDay(venue, day);
         }
     }
 }

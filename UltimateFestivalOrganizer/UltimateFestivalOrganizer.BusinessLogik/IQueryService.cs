@@ -17,6 +17,7 @@ namespace UltimateFestivalOrganizer.BusinessLogik
         IList<Performance> QueryPerfomancesByArtist(int artistId);
         IList<Performance> QueryPerfomancesByVenue(int venueId);
         IList<Performance> QueryPerfomancesByCatagory(int catagoryId);
+        IList<Performance> QueryPerformancesByVenueAndDay(Venue venue, DateTime day);
 
         IList<Catagory> QueryCatagories();
         IList<Venue> QueryVenues();

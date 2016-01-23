@@ -186,10 +186,14 @@ namespace UltimateFestivalOrganizer.Commander.ViewModels
 
                 if (p?.Artist?.Id == current?.Artist?.Id && p != current)
                 {
-                    if (p.StagingTime == current.StagingTime || p.StagingTime.AddHours(-1) == current.StagingTime || current.StagingTime.AddHours(-1) == p.StagingTime)
+                    DateTime postPoneDate = new DateTime(current.StagingTime.Year, current.StagingTime.Month, current.StagingTime.Day, current.StagingTime.Hour, 0, 0);
+                    DateTime currentDate = new DateTime(p.StagingTime.Year, p.StagingTime.Month, p.StagingTime.Day, p.StagingTime.Hour, 0, 0);
+
+                    if (postPoneDate >= currentDate.AddHours(-2) && postPoneDate <= currentDate.AddHours(2))
                     {
                         return false;
                     }
+                   
                 }
             }
             return true;

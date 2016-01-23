@@ -11,6 +11,10 @@ namespace UltimateFestivalOrganizer.WebService.Controllers
     
     public class UserController : ApiController
     {
+        /// <summary>
+        /// GET api/user/authenticate
+        /// </summary>
+        /// <returns>Boolean if BasicAuthentication was successful, if not Route will throw 401</returns>
         [BasicAuthorizeAttribute]
         [Route("api/user/authenticate")]
         public Boolean Get()
