@@ -46,18 +46,23 @@ public class RestClient implements Serializable {
 	
 	public <T>T fetchJsonData(String relativUrl, Class clazz)throws ServiceConnectionException{
 		HttpURLConnection conn = null;
-		Gson g = new Gson();//new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mmZ").create();
+		Gson g = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 		try {
 			URL url = new URL(this.baseServiceUrl+relativUrl);
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
+			System.out.println("url: "+ url.toString());
+			System.out.println("response: "+ conn.getResponseCode() + " / "+ conn.getResponseMessage());
 			if (conn.getResponseCode() != 200) {
 				throw new ServiceConnectionException(conn.getResponseCode(),conn.getResponseMessage());
 			}
 			Reader r = new InputStreamReader(conn.getInputStream());
 			return g.fromJson(r, clazz);
 		} catch (Exception e) {
+			if(e instanceof ServiceConnectionException){
+				throw (ServiceConnectionException)e;
+			}
 			e.printStackTrace();
 			throw new ServiceConnectionException(0, e.getMessage());
 		}finally {
@@ -82,27 +87,33 @@ public class RestClient implements Serializable {
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
 			String data = g.toJson(obj);
-			System.out.println("send data: "+ data);
 			
 			OutputStream outStream = new BufferedOutputStream(connection.getOutputStream());
             outStream.write(data.getBytes());
             outStream.flush();
             outStream.close();
-            
+            System.out.println("url: "+ url.toString());
+			System.out.println("response: "+ connection.getResponseCode() + " / "+ connection.getResponseMessage());
 			if (connection.getResponseCode() != 200) {
 				throw new ServiceConnectionException(connection.getResponseCode(),connection.getResponseMessage());
 			}
 			Reader r = new InputStreamReader(connection.getInputStream());
 			return g.fromJson(r, clazz);
 		}catch(Exception e){
+			if(e instanceof ServiceConnectionException){
+				throw (ServiceConnectionException)e;
+			}
 			throw new ServiceConnectionException(0,e.getMessage());
+		}finally{
+			if(connection != null){
+				connection.disconnect();
+			}
 		}
 	}
     
 	
 	public <T>T fetchJsonData(String relativUrl,Map<String,String>params,String userId, Class clazz)throws ServiceConnectionException{
 		HttpURLConnection conn = null;
-		System.out.println("userId: "+ userId);
 		Gson g = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 		boolean first = true;
 		try {
@@ -132,14 +143,18 @@ public class RestClient implements Serializable {
 							conn.setRequestMethod("GET");
 						
 			System.out.println("url: "+ url.toString());
+			System.out.println("response: "+ conn.getResponseCode() + " / "+ conn.getResponseMessage());
+			int  statusCode= conn.getResponseCode();
 			
-			if (conn.getResponseCode() != 200) {
-				throw new ServiceConnectionException(conn.getResponseCode(),conn.getResponseMessage());
+			if (statusCode != 200) {
+				throw new ServiceConnectionException(statusCode,conn.getResponseMessage());
 			}
 			Reader r = new InputStreamReader(conn.getInputStream());
 			return g.fromJson(r, clazz);
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(e instanceof ServiceConnectionException){
+				throw (ServiceConnectionException)e;				
+			}		
 			throw new ServiceConnectionException(0, e.getMessage());
 		}finally {
 			if(conn != null){

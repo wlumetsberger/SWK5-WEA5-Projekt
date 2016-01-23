@@ -43,14 +43,14 @@ public class ShowPerformancesBean implements Serializable {
 	@Inject
 	@Named("QueryService")
 	private IQueryService queryService;
-	
+
 	@Inject
 	@Named("AdministrationService")
 	private IAdministrationService administrationService;
-	
+
 	@Inject
 	UserBean userBean;
-	
+
 	private DateTimeFormatter dateFromatter;
 
 	@Getter
@@ -92,14 +92,25 @@ public class ShowPerformancesBean implements Serializable {
 	@Getter
 	@Setter
 	private String postPoneDate;
-	
-
+	@Getter
+	@Setter
+	private String postPoneVenue;
 
 	public ShowPerformancesBean() {
+
 	}
 
 	@PostConstruct
 	private void initialize() {
+		try {
+			String artistId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+					.get("artistId");
+			if (artistId != null) {
+				this.artist = artistId;
+			}
+		} catch (Exception e) {
+			// do search without request parameter
+		}
 		this.dateFromatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		try {
 			List<Artist> artists = queryService.queryArtists();
@@ -109,7 +120,9 @@ public class ShowPerformancesBean implements Serializable {
 			this.artists = new ArrayList<>();
 			this.catagories = new ArrayList<>();
 			this.venues = new ArrayList<>();
-			this.stagingDate = dateFromatter.format(LocalDate.now());
+			if (this.artist == null) {
+				this.stagingDate = dateFromatter.format(LocalDate.now());
+			}
 			this.artists.add(new SelectItem(null, "Bitte auswählen"));
 			this.catagories.add(new SelectItem(null, "Bitte auswählen"));
 			this.venues.add(new SelectItem(null, "Bitte auswählen"));
@@ -125,6 +138,8 @@ public class ShowPerformancesBean implements Serializable {
 			this.doSearch();
 		} catch (ServiceConnectionException e) {
 			e.printStackTrace();
+			FacesHelper.addFacesMessage("Daten können nicht geladen werden, versuchen Sie es nocheimal oder wenden Sie sich an den Administrator", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());			
+
 		}
 	}
 
@@ -158,63 +173,81 @@ public class ShowPerformancesBean implements Serializable {
 		}
 	}
 
-	
+	public void postPoneVenueChanged(ValueChangeEvent event) {
+		if (event.getNewValue() != null) {
+			this.postPoneVenue = (String) event.getNewValue();
+		}
+	}
+
 	public void openDetails(Performance current) {
 		this.currentPerformance = current;
 		this.showPostpone = false;
-		System.out.println("long: " + currentPerformance.getVenue().getLongitude() + " lat: " + currentPerformance.getVenue().getLatitude());
+		System.out.println("long: " + currentPerformance.getVenue().getLongitude() + " lat: "
+				+ currentPerformance.getVenue().getLatitude());
 	}
-	public void openPostpone(){
+
+	public void openPostpone() {
 		this.showPostpone = true;
-		System.out.println("show postpone+ "+ this.showPostpone);
+		this.postPoneVenue = String.valueOf(this.currentPerformance.getVenue().getId());
+		System.out.println("show postpone+ " + this.showPostpone);
 	}
-	public void cancelPerformance(){
+
+	public void cancelPerformance() {
 		System.out.println("cancelPerformance");
 		try {
-			if(this.administrationService.canclePerformance(this.currentPerformance.getId(), userBean.getUserId())){
-				FacesHelper.addFacesMessage("Veranstaltung wurde abgesagt", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+			if (this.administrationService.canclePerformance(this.currentPerformance.getId(), userBean.getUserId())) {
+				FacesHelper.addFacesMessage("Veranstaltung wurde abgesagt", FacesMessage.SEVERITY_INFO,
+						FacesContext.getCurrentInstance());
 				this.doSearch();
 				return;
 			}
 		} catch (ServiceConnectionException e) {
 			e.printStackTrace();
 		}
-		FacesHelper.addFacesMessage("Ein Fehler ist aufgetreten: Die Veranstaltung konnte nicht abgesagt werden", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
-		
+		FacesHelper.addFacesMessage("Ein Fehler ist aufgetreten: Die Veranstaltung konnte nicht abgesagt werden",
+				FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+
 	}
-	
-	public void cancleOpenPostpone(){
+
+	public void cancelOpenDialog() {
 		this.showPostpone = false;
+		this.currentPerformance = null;
 	}
-	
-	public void doPostpone(){
+
+	public void doPostpone() {
 		try {
-			
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-			Date d =df.parse(this.postPoneDate);
-			if(!administrationService.checkPostPonePerformance(d, this.currentPerformance.getId(), userBean.getUserId())){
-				FacesHelper.addFacesMessage("Veranstaltung konnte nicht auf den gewünschten Termin verschoben werden. Das Datum kollidiert mit einem anderen Termin des Künstlers", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH");
+			Date d = df.parse(this.postPoneDate);
+			int venueId = Integer.parseInt(this.postPoneVenue);
+			if (!administrationService.checkPostPonePerformance(d, this.currentPerformance.getId(), venueId,
+					userBean.getUserId())) {
+				FacesHelper.addFacesMessage(
+						"Veranstaltung konnte nicht auf den gewünschten Termin verschoben werden. Das Datum kollidiert mit einem anderen Termin des Künstlers",
+						FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+				this.showPostpone = false;
 				return;
 			}
-			if(administrationService.postPonePerformance(d, this.currentPerformance.getId(), userBean.getUserId())){
-				FacesHelper.addFacesMessage("Veranstaltung wurde erfolgreich verschoben", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+			if (administrationService.postPonePerformance(d, this.currentPerformance.getId(), venueId,
+					userBean.getUserId())) {
+				FacesHelper.addFacesMessage("Veranstaltung wurde erfolgreich verschoben", FacesMessage.SEVERITY_INFO,
+						FacesContext.getCurrentInstance());
 				this.stagingDate = new SimpleDateFormat("yyyy-MM-dd").format(d);
 				this.artist = String.valueOf(currentPerformance.getArtist().getId());
-				this.catagory = String.valueOf(currentPerformance.getArtist().getCatagory());
-				this.venue = String.valueOf(currentPerformance.getVenue().getId());
-				this.showPostpone=false;
+				this.catagory = String.valueOf(currentPerformance.getArtist().getCatagory().getId());
+				this.venue = String.valueOf(venueId);
+				this.showPostpone = false;
 				this.doSearch();
 				return;
-			}			
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		FacesHelper.addFacesMessage("Veranstaltung konnte nicht verschoben werden", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+		FacesHelper.addFacesMessage("Veranstaltung konnte nicht verschoben werden", FacesMessage.SEVERITY_ERROR,
+				FacesContext.getCurrentInstance());
 	}
 
 	public void doSearch() {
-		System.out
-				.println("Date: " + stagingDate + " Artist: " + artist + " Catagory: " + catagory + " Venue: " + venue);
 		try {
 			if (stagingDate == null && venue == null && artist == null && catagory == null) {
 				FacesHelper.addFacesMessage("Es muss mindestens eine Einschränkung getroffen werden",
@@ -239,6 +272,8 @@ public class ShowPerformancesBean implements Serializable {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			FacesHelper.addFacesMessage("Daten können nicht geladen werden, versuchen Sie es nocheimal oder wenden Sie sich an den Administrator", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());			
+
 		}
 	}
 

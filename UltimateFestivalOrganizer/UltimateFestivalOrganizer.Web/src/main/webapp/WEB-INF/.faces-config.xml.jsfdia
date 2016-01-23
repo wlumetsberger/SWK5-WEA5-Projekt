@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PROCESS model-entity="JSFProcess">
  <PROCESS-ITEM NAME="rules:#index.xhtml" PATH="/index.xhtml"
-  SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  SHAPE="240,208,50,57" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:#index.xhtml:0" NAME="item"
    PATH="/index.xhtml" model-entity="JSFProcessItem">
    <PROCESS-ITEM-OUTPUT ID="showPerformances::#showPerformances.xhtml"
@@ -13,13 +13,25 @@
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#showPerformances.xhtml"
-  PATH="/showPerformances.xhtml" SHAPE="424,48,50,25" model-entity="JSFProcessGroup">
+  PATH="/showPerformances.xhtml" SHAPE="1464,192,50,57" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:#showPerformances.xhtml:0" NAME="item"
    PATH="/showPerformances.xhtml" model-entity="JSFProcessItem">
    <PROCESS-ITEM-OUTPUT ID="home::#index.xhtml" NAME="output"
     PATH="/index.xhtml" TARGET="rules:#index.xhtml" TITLE="home" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="showArtists::#showArtists.xhtml"
+    NAME="output1" PATH="/showArtists.xhtml"
+    TARGET="rules:#showArtists.xhtml" TITLE="showArtists" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#showArtists.xhtml" PATH="/showArtists.xhtml"
-  SHAPE="256,33,0,0" model-entity="JSFProcessGroup"/>
+  SHAPE="1192,664,50,57" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#showArtists.xhtml:0" NAME="item"
+   PATH="/showArtists.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="home::#index.xhtml" NAME="output"
+    PATH="/index.xhtml" TARGET="rules:#index.xhtml" TITLE="home" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="showPerformances::#showPerformances.xhtml"
+    NAME="output1" PATH="/showPerformances.xhtml"
+    TARGET="rules:#showPerformances.xhtml" TITLE="showPerformances" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
 </PROCESS>

@@ -12,89 +12,90 @@ import javax.inject.Named;
 
 import at.wlumetsberger.ufo.services.exceptions.ServiceConnectionException;
 import at.wlumetsberger.ufo.services.interfaces.IAuthenticationService;
+import at.wlumetsberger.ufo.util.FacesHelper;
 import lombok.Getter;
 import lombok.Setter;
 
-
-@Named(value="userBean")
+@Named(value = "userBean")
 @SessionScoped
 public class UserBean implements Serializable {
 
 	private static final long serialVersionUID = -1106655528866778281L;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	private boolean loggedIn;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	private String userName;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	private String password;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	private String userId;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	private boolean showLogginForm;
-	
-	@Inject @Named("AuthenticationService")
+
+	@Inject
+	@Named("AuthenticationService")
 	IAuthenticationService authenticationService;
-	
-	public UserBean(){
-		
+
+	public UserBean() {
+
 	}
-	
+
 	@PostConstruct
-	public void initialize(){
-		
+	public void initialize() {
+
 		this.loggedIn = false;
 		this.userName = null;
 		this.password = null;
 	}
-	
-	public void showLogin(){
+
+	public void showLogin() {
 		this.setShowLogginForm(true);
 	}
-	
-	public void dismissLogin(){
+
+	public void dismissLogin() {
 		this.setShowLogginForm(false);
 	}
-	
-	public void doLogin(){
-		System.out.println("doLogin");
-		String userPassword = this.userName + ":"+ this.password;
+
+	public void doLogin() {
+		String userPassword = this.userName+":"+this.password;
 		String encoding = new String(Base64.getEncoder().encode(userPassword.getBytes()));
-		try{
-		if(authenticationService.authenticateUser(encoding)){
-			this.loggedIn = true;			
-			FacesMessage message = new FacesMessage();
-            message.setSeverity(FacesMessage.SEVERITY_INFO);
-            message.setSummary("Herzlich Willkommen "+ userName);
-            FacesContext.getCurrentInstance().addMessage("", message);
-            this.userId = encoding;
-		}else{
-			this.loggedIn = false;
-			FacesMessage message = new FacesMessage();
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            message.setSummary("Loggin Fehlgeschlagen.");
-            message.setDetail("Benutzername oder Passwort ist falsch.");
-            FacesContext.getCurrentInstance().addMessage("", message);
-            this.userId = null;
-		}}catch(ServiceConnectionException e){
-			e.printStackTrace();
-			this.loggedIn = false;
-			FacesMessage message = new FacesMessage();
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            message.setSummary("Loggin Fehlgeschlagen.");
-            message.setDetail("Benutzername oder Passwort ist falsch.");
-            FacesContext.getCurrentInstance().addMessage("", message);
-            this.userId = null;
-            this.userName= null;
-            this.password = null;
+		try {
+			if (authenticationService.authenticateUser(encoding)) {
+				this.loggedIn = true;
+				this.userId = encoding;
+				FacesHelper.addFacesMessage("Herzlich Willkommen " + userName, FacesMessage.SEVERITY_INFO,
+						FacesContext.getCurrentInstance());
+			} else {
+				this.loggedIn = false;
+				this.userId = null;
+				FacesHelper.addFacesMessage("Login ist fehlgeschlagen, Benutzername oder Passwort ist falsch",
+						FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+			}
+		} catch (ServiceConnectionException e) {
+			if (e.getStatuscode() == 401) {
+				FacesHelper.addFacesMessage("Login ist fehlgeschlagen, Benutzername oder Passwort ist falsch",
+						FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+			} else {
+				FacesHelper.addFacesMessage("Login ist fehlgeschlagen, Login-Service ist nicht erreichbar",
+						FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+			}
+			this.userId = null;
+			this.userName = null;
+			this.password = null;
 		}
 	}
-	
-	public void doLogout(){
+
+	public void doLogout() {
 		this.userName = null;
 		this.password = null;
 		this.loggedIn = false;
