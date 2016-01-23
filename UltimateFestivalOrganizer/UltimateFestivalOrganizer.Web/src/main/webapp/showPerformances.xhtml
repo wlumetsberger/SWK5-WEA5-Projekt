@@ -25,11 +25,16 @@
 			function showMap(lat, lng) {
 				var mapProp = {
 					center : new google.maps.LatLng(lat, lng),
-					zoom : 16,
+					zoom : 10,
 					mapTypeId : google.maps.MapTypeId.ROADMAP
 				};
 				var map = new google.maps.Map(document.getElementById("map"),
 						mapProp);
+				var marker = new google.maps.Marker({
+				    position:  new google.maps.LatLng(lat, lng),
+				    map: map,
+				    title: ''
+				  });
 			}
 			function showDialog() {
 				$('#performanceForm\\:detailsDialog').removeClass("hide")
@@ -48,9 +53,8 @@
 					format : 'YYYY-MM-DD'
 				});
 				$('#newVeranstaltungsDatum').datetimepicker({
-					format : 'YYYY-MM-DD HH:mm'
+					format : 'YYYY-MM-DD HH'
 				});
-
 				return true;
 			}
 
@@ -201,7 +205,7 @@
 													Details
 													<f:ajax execute="@this"
 														render="@form, performanceForm:detailsDialog"
-														onevent="function() {initializeDialog( #{item.venue.latitude}, #{item.venue.longitude} );} " />
+														onevent="function() {initializeDialog( #{koordinateConverter.toLatitude(item.venue.latitude)}, #{koordinateConverter.toLongitude(item.venue.longitude)});} " />
 												</h:commandLink>
 											</p>
 											<p jsf:rendered="#{not empty item.artist.link}">
@@ -214,7 +218,7 @@
 													Details
 													<f:ajax execute="@this"
 														render="@form, performanceForm:detailsDialog"
-														onevent="function() {initializeDialog( #{item.venue.latitude}, #{item.venue.longitude} );} " />
+														onevent="function() {initializeDialog( #{koordinateConverter.toLatitude(item.venue.latitude)}, #{koordinateConverter.toLongitude(item.venue.longitude)});}" />
 												</h:commandLink>
 
 
@@ -262,13 +266,23 @@
 										value="#{showPerformancesBean.postPoneDate}"
 										styleClass="form-control">
 										<f:ajax execute="@this"
-											render="@this, newVeranstaltungsDatumControl" />
+											render="@this" />
 									</h:inputText>
 									<span class="input-group-addon"> <span
 										class="glyphicon glyphicon-calendar"></span>
 									</span>
 								</div>
 							</div>
+							<div class="form-group">
+							<label for="postpone_venue">Neuer Ort</label>
+							<h:selectOneMenu id="postpone_venue" styleClass="form-control"
+								value="#{showPerformancesBean.postPoneVenue}"
+								valueChangeListener="#{showPerformancesBean.postPoneVenueChanged}">
+								<f:ajax execute="@this" render="@this" />
+								<f:selectItems id="postponeVenueItems"
+									value="#{showPerformancesBean.venues}" />
+							</h:selectOneMenu>
+						</div>
 
 						</div>
 						<div jsf:id="normalBody"
@@ -276,7 +290,7 @@
 							class="modal-body">
 							<div class="container">
 								<div class="row">
-									<div class="col-md-4">
+									<div class="col-md-6">
 										<h4>
 											<span class="text-muted"><i
 												class="glyphicon glyphicon-time"></i>
@@ -296,7 +310,7 @@
 											#{showPerformancesBean.currentPerformance.venue.shortDescription}</p>
 									</div>
 
-									<div class="col-md-8">
+									<div class="col-md-6">
 										<div id="map" style="width: 250px; height: 250px;" />
 									</div>
 								</div>
@@ -310,7 +324,7 @@
 									styleClass="btn btn-primary">
 													Absagen
 													<f:ajax execute="@this"
-										render="@form, performanceForm:detailsDialog"
+										render="@form, performanceForm:detailsDialog, successPanel"
 										onevent="hideDialog" />
 								</h:commandLink>
 								<h:commandLink
@@ -321,27 +335,25 @@
 													<f:ajax execute="@this"
 										render="performanceForm:detailsDialog" onevent="showDialog" />
 								</h:commandLink>
-								<h:commandLink rendered="#{showPerformancesBean.showPostpone}"
-									action="#{showPerformancesBean.cancleOpenPostpone()}"
-									styleClass="btn btn-primary">
-													Zurück
-													<f:ajax execute="@this"
-										render="performanceForm:detailsDialog" onevent="showDialog" />
-								</h:commandLink>
+								
 								<h:commandLink rendered="#{showPerformancesBean.showPostpone}"
 									action="#{showPerformancesBean.doPostpone()}"
-									styleClass="btn btn-primary">
+									styleClass="btn btn-primary">, 
 													Speichern
 													<f:ajax execute="@form"
-										render="@form performanceForm:detailsDialog"
+										render="@form performanceForm:detailsDialog, successPanel"
+										onevent="hideDialog" />
+								</h:commandLink>
+								<h:commandLink 
+									action="#{showPerformancesBean.cancelOpenDialog()}"
+									styleClass="btn btn-primary">
+													Abbrechen
+													<f:ajax execute="@form"
+										render="@form performanceForm:detailsDialog, successPanel"
 										onevent="hideDialog" />
 								</h:commandLink>
 
-								<button jsf:id="abortDialog" class="btn" aria-hidden="true"
-									data-dismiss="modal">
-									Abbrechen
-									<f:ajax execute="@this" render="@form" onevent="hideDialog" />
-								</button>
+								
 							</div>
 						</div>
 					</div>

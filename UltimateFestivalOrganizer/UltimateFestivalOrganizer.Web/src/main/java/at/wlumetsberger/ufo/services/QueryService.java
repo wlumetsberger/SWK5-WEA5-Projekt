@@ -27,20 +27,20 @@ public class QueryService implements IQueryService {
 	}
 
 	public List<Artist> queryArtists() throws ServiceConnectionException {
-		Artist[] result = restClient.<Artist[]>fetchJsonData("artist",Artist[].class);
+		Artist[] result = restClient.<Artist[]>fetchJsonData("artist/getAll",Artist[].class);
 		return Arrays.asList(result);
 	}
 
 	
 	@Override
 	public List<Catagory> queryCatagories() throws ServiceConnectionException {
-		Catagory[] catagory = restClient.<Catagory[]>fetchJsonData("catagory",Catagory[].class);
+		Catagory[] catagory = restClient.<Catagory[]>fetchJsonData("catagory/getAll",Catagory[].class);
 		return Arrays.asList(catagory);
 	}
 
 	@Override
 	public List<Venue> queryVenues() throws ServiceConnectionException {
-		Venue[] venue = restClient.<Venue[]>fetchJsonData("venue",Venue[].class);
+		Venue[] venue = restClient.<Venue[]>fetchJsonData("venue/getAll",Venue[].class);
 		return Arrays.asList(venue);
 	}
 
@@ -49,7 +49,7 @@ public class QueryService implements IQueryService {
 		Map<String,String> params = new HashMap<>();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		params.put("day", formatter.format(day) );
-		Performance[] performances = restClient.<Performance[]>fetchJsonData("performance", params,null,Performance[].class);
+		Performance[] performances = restClient.<Performance[]>fetchJsonData("performance/getByDay", params,null,Performance[].class);
 		return Arrays.asList(performances);
 		
 	}
@@ -58,7 +58,7 @@ public class QueryService implements IQueryService {
 	public List<Performance> queryPerformancesByArtist(int artistId) throws ServiceConnectionException {
 		Map<String,String> params = new HashMap<>();
 		params.put("artistId", String.valueOf(artistId));
-		Performance[] performances = restClient.<Performance[]>fetchJsonData("performance", params,null,Performance[].class);
+		Performance[] performances = restClient.<Performance[]>fetchJsonData("performance/getByArtist", params,null,Performance[].class);
 		return Arrays.asList(performances);
 	}
 
@@ -66,7 +66,7 @@ public class QueryService implements IQueryService {
 	public List<Performance> queryPerformancesByVenue(int venueId) throws ServiceConnectionException {
 		Map<String,String> params = new HashMap<>();
 		params.put("venueId", String.valueOf(venueId));
-		Performance[] performances = restClient.<Performance[]>fetchJsonData("performance", params,null,Performance[].class);
+		Performance[] performances = restClient.<Performance[]>fetchJsonData("performance/getByVenue", params,null,Performance[].class);
 		return Arrays.asList(performances);
 	}
 
@@ -74,7 +74,7 @@ public class QueryService implements IQueryService {
 	public List<Performance> queryPerformancesByCatagory(int catagoryId) throws ServiceConnectionException {
 		Map<String,String> params = new HashMap<>();
 		params.put("catagoryId", String.valueOf(catagoryId));
-		Performance[] performances = restClient.<Performance[]>fetchJsonData("performance", params,null,Performance[].class);
+		Performance[] performances = restClient.<Performance[]>fetchJsonData("performance/getByCatagory", params,null,Performance[].class);
 		return Arrays.asList(performances);
 	}
 
